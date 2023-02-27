@@ -1,6 +1,10 @@
 {
   "dependencies": {
     "express": "^4.18.2",
-    "sequelize": "^6.29.0"
+    "sequelize": "^6.29.0",
+    "sqlite3": "^5.1.4"
+  },
+  "scripts": {
+    "populate": "node ./src/database/populateDB.js"
   }
 }
