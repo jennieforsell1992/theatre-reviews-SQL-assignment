@@ -3,7 +3,7 @@ const { theatres } = require("../data/theatres");
 
 const seedTheatresDb = async () => {
   try {
-    await sequelize.query(`DROP TABLE IF EXISTS theatres;`);
+    await sequelize.query(`DROP TABLE IF EXISTS theatre;`);
 
     await sequelize.query(`
         CREATE TABLE IF NOT EXISTS theatre (
