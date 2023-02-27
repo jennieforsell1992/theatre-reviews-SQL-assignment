@@ -1,13 +1,15 @@
 const { sequelize } = require("./config");
 const { theatres } = require("../data/theatres");
 const { users } = require("../data/users");
+const { reviews } = require("../data/reviews");
 
 const seedTheatresDb = async () => {
   try {
     await sequelize.query(`DROP TABLE IF EXISTS theatre;`);
     await sequelize.query(`DROP TABLE IF EXISTS user;`);
+    await sequelize.query(`DROP TABLE IF EXISTS review;`);
 
-    // User
+    /* ------------------------ Users ------------------------------ */
     await sequelize.query(`
     CREATE TABLE IF NOT EXISTS user (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -45,12 +47,13 @@ const seedTheatresDb = async () => {
     const [userResponse, metadata] = await sequelize.query(
       "SELECT username, id FROM user"
     );
-    console.log(userResponse.id);
-    //Theatres
+    console.log("Users klar!");
+
+    /* ------------------------ Theatres ------------------------------ */
 
     await sequelize.query(`
         CREATE TABLE IF NOT EXISTS theatre (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          theatre_id INTEGER PRIMARY KEY AUTOINCREMENT,
           theatreName TEXT NOT NULL,
           address TEXT NOT NULL,
           phoneNumber TEXT NOT NULL,
@@ -85,7 +88,6 @@ const seedTheatresDb = async () => {
         theatre.reviews,
       ];
 
-      console.log(userResponse);
       const userId = userResponse.find(
         (user) => user.username === theatre.owner
       );
@@ -103,7 +105,71 @@ const seedTheatresDb = async () => {
       bind: theatreInsertQueryVariables,
     });
 
-    //Tabell 3
+    const [theatreResponse] = await sequelize.query(
+      "SELECT theatre_id FROM theatre"
+    );
+
+    console.log("Theatres klar!");
+
+    /* ------------------------ Review ------------------------------ */
+    await sequelize.query(`
+    CREATE TABLE IF NOT EXISTS review (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      mainText TEXT NOT NULL,
+      rating INTEGER NOT NULL,
+
+      fk_user_id INTEGER NOT NULL,
+      FOREIGN KEY(fk_user_id) REFERENCES user(id),
+
+      fk_theatre_id INTEGER NOT NULL,
+      FOREIGN KEY(fk_theatre_id) REFERENCES theatre(theatre_id)
+    );
+    `);
+
+    let reviewInsertQuery =
+      "INSERT INTO review (mainText, rating, fk_user_id, fk_theatre_id) VALUES ";
+
+    let reviewInsertQueryVariables = [];
+
+    reviews.forEach((review, index, array) => {
+      let string = "(";
+      for (let i = 1; i < 5; i++) {
+        string += `$${reviewInsertQueryVariables.length + i}`;
+        if (i < 4) string += ",";
+      }
+      reviewInsertQuery += string + ")";
+      if (index < array.length - 1) reviewInsertQuery += ",";
+
+      const variables = [review.mainText, review.rating];
+
+      // kopplar till en user
+      const userId = userResponse.find(
+        (user) => user.username === review.reviewer
+      );
+
+      variables.push(userId.id);
+      reviewInsertQueryVariables = [
+        ...reviewInsertQueryVariables,
+        ...variables,
+      ];
+
+      //kopplar till en teater
+      const theatreId = theatreResponse.find(
+        (theatre) => theatre.theatreName === review.theatre
+      );
+
+      variables.push(theatreId.id);
+      reviewInsertQueryVariables = [
+        ...reviewInsertQueryVariables,
+        ...variables,
+      ];
+    });
+
+    reviewInsertQuery += ";";
+
+    await sequelize.query(reviewInsertQuery, {
+      bind: reviewInsertQueryVariables,
+    });
   } catch (error) {
     console.error(error);
   } finally {
