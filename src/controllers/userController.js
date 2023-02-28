@@ -51,10 +51,10 @@ exports.updateUser = async (req, res) => {
   const userId = req.params.userId || req.body.userId;
 
   const [updatedTodoId] = await sequelize.query(
-    `UPDATE user SET "" WHERE "" RETURNING *`,
+    `UPDATE user SET "" WHERE id = userId RETURNING *`,
     {
-      bind: { todo: todo, listId: listId },
-      type: QueryTypes.INSERT, // returns ID of created row
+      bind: { user: user, userId: userId },
+      type: QueryTypes.UPDATE,
     }
   );
 
