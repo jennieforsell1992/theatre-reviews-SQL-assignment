@@ -58,10 +58,7 @@ exports.updateUser = async (req, res) => {
     }
   );
 
-  // prettier-ignore
-  return res
-    .setHeader('Location', `${req.protocol}://${req.headers.host}/api/v1/lists/${newTodoId}`)
-    .sendStatus(201)
+  return res.sendStatus(201);
 };
 
 exports.deleteUserById = async (req, res) => {
