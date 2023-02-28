@@ -7,7 +7,6 @@ const theatreRoutes = require("./routes/theatreRoutes");
 const userRoutes = require("./routes/userRoutes");
 const { errorMiddleware } = require("./middleware/errorMiddleware");
 const { notFoundMiddleware } = require("./middleware/notFoundMiddleware");
-
 const { sequelize } = require("./database/config");
 
 /* Create app */
