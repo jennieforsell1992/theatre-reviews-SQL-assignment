@@ -6,6 +6,7 @@
     "sqlite3": "^5.1.4"
   },
   "scripts": {
-    "populate": "node ./src/database/populateDB.js"
+    "populate": "node ./src/database/populateDB.js",
+    "dev": "nodemon ./src/app.js"
   }
 }
