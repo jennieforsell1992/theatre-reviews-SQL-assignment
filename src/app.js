@@ -1,9 +1,12 @@
 require("dotenv").config();
 require("express-async-errors");
 const express = require("express");
-const apiRoutes = require("./routes");
+const reviewRoutes = require("./routes/reviewRoutes");
+const authRoutes = require("./routes/authRoutes");
+const theatreRoutes = require("./routes/theatreRoutes");
+const userRoutes = require("./routes/userRoutes");
 const { errorMiddleware } = require("./middleware/errorMiddleware");
-const { notFoundMiddleware } = require("...error");
+const { notFoundMiddleware } = require("./middleware/notFoundMiddleware");
 
 const { sequelize } = require("./database/config");
 
@@ -20,7 +23,10 @@ app.use((req, res, next) => {
 });
 
 /* Routes */
-app.use("/api/v1", apiRoutes);
+app.set("/api/v1/", reviewRoutes);
+app.set("/api/v1/", theatreRoutes);
+app.set("/api/v1/", userRoutes);
+app.set("/api/v1/auth", authRoutes);
 
 /* Error Handling */
 app.use(notFoundMiddleware);
@@ -34,11 +40,7 @@ const run = async () => {
     await sequelize.authenticate();
 
     app.listen(port, () => {
-      console.log(
-        `Server is listening on ${
-          process.env.NODE_ENV === "development" ? "http://localhost:" : "port "
-        }${port}`
-      );
+      console.log(`Server running on http://localhost:${port}`);
     });
   } catch (error) {
     console.error(error);
