@@ -5,9 +5,9 @@ const { reviews } = require("../data/reviews");
 
 const seedTheatresDb = async () => {
   try {
+    await sequelize.query(`DROP TABLE IF EXISTS review;`);
     await sequelize.query(`DROP TABLE IF EXISTS theatre;`);
     await sequelize.query(`DROP TABLE IF EXISTS user;`);
-    await sequelize.query(`DROP TABLE IF EXISTS review;`);
 
     /* ------------------------ Users ------------------------------ */
     await sequelize.query(`
@@ -53,7 +53,7 @@ const seedTheatresDb = async () => {
 
     await sequelize.query(`
         CREATE TABLE IF NOT EXISTS theatre (
-          theatre_id INTEGER PRIMARY KEY AUTOINCREMENT,
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
           theatreName TEXT NOT NULL,
           address TEXT NOT NULL,
           phoneNumber TEXT NOT NULL,
@@ -106,7 +106,7 @@ const seedTheatresDb = async () => {
     });
 
     const [theatreResponse] = await sequelize.query(
-      "SELECT theatre_id FROM theatre"
+      "SELECT id, theatreName FROM theatre"
     );
 
     console.log("Theatres klar!");
@@ -117,12 +117,11 @@ const seedTheatresDb = async () => {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       mainText TEXT NOT NULL,
       rating INTEGER NOT NULL,
+      fk_user_id INTEGER,
+      fk_theatre_id INTEGER,
 
-      fk_user_id INTEGER NOT NULL,
       FOREIGN KEY(fk_user_id) REFERENCES user(id),
-
-      fk_theatre_id INTEGER NOT NULL,
-      FOREIGN KEY(fk_theatre_id) REFERENCES theatre(theatre_id)
+      FOREIGN KEY(fk_theatre_id) REFERENCES theatre(id)
     );
     `);
 
@@ -148,10 +147,6 @@ const seedTheatresDb = async () => {
       );
 
       variables.push(userId.id);
-      reviewInsertQueryVariables = [
-        ...reviewInsertQueryVariables,
-        ...variables,
-      ];
 
       //kopplar till en teater
       const theatreId = theatreResponse.find(
@@ -170,9 +165,13 @@ const seedTheatresDb = async () => {
     await sequelize.query(reviewInsertQuery, {
       bind: reviewInsertQueryVariables,
     });
+
+    console.log("Reviews klar!");
   } catch (error) {
     console.error(error);
   } finally {
+    console.log("Script kört!");
+
     process.exit(0);
   }
 };
