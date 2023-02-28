@@ -5,7 +5,7 @@ const { UnauthorizedError } = require("../utils/errors");
 exports.getAllUsers = async (req, res) => {
   try {
     const [users, metadata] = await sequelize.query(
-      "SELECT id, username, email, role FROM users"
+      "SELECT id, username, email, role FROM user"
     );
     console.log(users);
     return res.json(users);
@@ -19,7 +19,7 @@ exports.getUserById = async (req, res) => {
     const userId = req.params.userId;
 
     const [user, metadata] = await sequelize.query(
-      "SELECT id, username, email, role FROM users WHERE id = $userId",
+      "SELECT id, username, email, role FROM user WHERE id = $userId",
       {
         bind: { userId },
         type: QueryTypes.SELECT,
@@ -35,13 +35,10 @@ exports.getUserById = async (req, res) => {
 exports.createNewUser = async (req, res) => {
   const user = req.body.user;
 
-  const [newUserId] = await sequelize.query(
-    "INSERT INTO user user VALUES $user;",
-    {
-      bind: { user: user },
-      type: QueryTypes.INSERT,
-    }
-  );
+  const [newUserId] = await sequelize.query("INSERT INTO user VALUES $user;", {
+    bind: { user: user },
+    type: QueryTypes.INSERT,
+  });
 
   return res.json(newUserId);
 };
@@ -50,8 +47,8 @@ exports.updateUser = async (req, res) => {
   const user = req.body.user;
   const userId = req.params.userId || req.body.userId;
 
-  const [updatedTodoId] = await sequelize.query(
-    `UPDATE user SET "" WHERE id = userId RETURNING *`,
+  const [updatedUserId] = await sequelize.query(
+    `UPDATE user SET  WHERE id = userId RETURNING *`,
     {
       bind: { user: user, userId: userId },
       type: QueryTypes.UPDATE,
@@ -69,7 +66,7 @@ exports.deleteUserById = async (req, res) => {
   }
 
   const [results, metadata] = await sequelize.query(
-    "DELETE FROM users WHERE id = $userId RETURNING *",
+    "DELETE FROM user WHERE id = $userId RETURNING *",
     {
       bind: { userId },
     }
