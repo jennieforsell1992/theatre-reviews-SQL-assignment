@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/");
-router.get("/reviewId");
+router.get("/:reviewId");
 router.post("/");
-router.put("/reviewId");
-router.delete("/reviewId");
+router.put("/:reviewId");
+router.delete("/:reviewId");
