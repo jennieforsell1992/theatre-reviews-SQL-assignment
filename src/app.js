@@ -1,4 +1,4 @@
-require("dontenv").config();
+require("dotenv").config();
 require("express-async-errors");
 const express = require("express");
 const apiRoutes = require("./routes");
