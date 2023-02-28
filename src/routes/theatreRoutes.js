@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-router.get("/");
-router.get("/:theatreId");
-router.post("/");
-router.put("/:theatreId");
-router.delete("/:theatreId");
+//get all theatres
+router.get("/:cityId");
+router.get("/:cityId/:theatreId");
+router.post("/:cityId");
+router.put("/:cityId/:theatreId");
+router.delete("/:cityId/:theatreId");
