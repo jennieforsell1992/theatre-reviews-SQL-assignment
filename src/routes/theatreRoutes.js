@@ -7,3 +7,5 @@ router.get("/:cityId/:theatreId");
 router.post("/:cityId");
 router.put("/:cityId/:theatreId");
 router.delete("/:cityId/:theatreId");
+
+module.exports = router;

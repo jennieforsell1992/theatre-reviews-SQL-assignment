@@ -22,10 +22,10 @@ app.use((req, res, next) => {
 });
 
 /* Routes */
-app.set("/api/v1/", reviewRoutes);
-app.set("/api/v1/", theatreRoutes);
-app.set("/api/v1/", userRoutes);
-app.set("/api/v1/auth", authRoutes);
+app.use("/api/v1/", reviewRoutes);
+app.use("/api/v1/", theatreRoutes);
+app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/auth", authRoutes);
 
 /* Error Handling */
 app.use(notFoundMiddleware);

@@ -4,11 +4,9 @@ const { UnauthorizedError } = require("../utils/errors");
 
 exports.getAllUsers = async (req, res) => {
   try {
-    const [users, metadata] = await sequelize.query(
-      "SELECT id, username, email, role FROM user"
-    );
+    const [users, metadata] = await sequelize.query("SELECT * FROM user");
     console.log(users);
-    return res.json(users);
+    return res.send(users);
   } catch (error) {
     return null;
   }
