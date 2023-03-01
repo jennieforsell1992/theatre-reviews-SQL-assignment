@@ -4,6 +4,7 @@ const {
   UnauthorizedError,
   BadRequestError,
   UnauthenticatedError,
+  ValidationError,
 } = require("../utils/errors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -18,14 +19,24 @@ exports.register = async (req, res) => {
     );
   }
 
+  //Checks if users already exist
+  const [results, metadata] = await sequelize.query(
+    "SELECT email FROM user WHERE email = $email;",
+    {
+      bind: {
+        email: email,
+      },
+    }
+  );
+  console.log(results);
+
+  if (results.length > 0) {
+    throw new ValidationError("Sorry, this email is already in use!");
+  }
+
   //Hash the password
   const salt = await bcrypt.genSalt(10);
   const hashedpassword = await bcrypt.hash(password, salt);
-
-  //Checks if users already exist
-  const [results, metadata] = await sequelize.query(
-    "SELECT id FROM user LIMIT 1;"
-  );
 
   //Add user to DB
   await sequelize.query(
@@ -48,9 +59,9 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   const { email, password: candidatePassword } = req.body;
 
-  if (!email) {
+  /* if (!email || !password) {
     throw new BadRequestError("You must provide an email and a password!");
-  }
+  } */
 
   //Check if email in DB
   const [user, metadata] = await sequelize.query(
@@ -60,8 +71,6 @@ exports.login = async (req, res) => {
       type: QueryTypes.SELECT,
     }
   );
-
-  console.log(user);
 
   if (!user) throw new UnauthenticatedError("Invalid Credentials");
 
@@ -79,7 +88,7 @@ exports.login = async (req, res) => {
     userId: user.id,
     username: user.username,
     email: user.email,
-    role: user["role"] === "ADMIN" ? userRoles.ADMIN : userRoles.USER,
+    role: user.role,
   };
 
   const jwtToken = jwt.sign(jwtPayload, process.env.JWT_SECRET, {
@@ -87,6 +96,4 @@ exports.login = async (req, res) => {
   });
 
   return res.json({ token: jwtToken, user: jwtPayload });
-
-  return res.send("Du är inloggad!");
 };

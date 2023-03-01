@@ -22,12 +22,10 @@ exports.isAuthenticated = async (req, res, next) => {
 
     // Place the token info on the request object (create a new "user" field)
     req.user = {
-      // @ts-ignore
       userId: payload.userId,
-      // @ts-ignore
-      role: payload.role,
-      // @ts-ignore
       username: payload.username,
+      email: payload.email,
+      role: payload.role,
     };
 
     // Go to next step (controller || middleware)
@@ -41,6 +39,7 @@ exports.isAuthenticated = async (req, res, next) => {
 exports.authorizeRoles = (...roles) => {
   return (req, res, next) => {
     // Check that user has a role && it includes the desired role(s)
+
     if (!req.user?.role || !roles.includes(req.user.role)) {
       throw new UnauthorizedError("Unauthorized Access");
     }
