@@ -4,7 +4,7 @@ const { UnauthorizedError } = require("../utils/errors");
 
 exports.getAllUsers = async (req, res) => {
   try {
-    const [users, metadata] = await sequelize.query("SELECT * FROM user");
+    const [users, metadata] = await sequelize.query("SELECT * FROM user;");
     console.log(users);
     return res.send(users);
   } catch (error) {
@@ -17,20 +17,20 @@ exports.getUserById = async (req, res) => {
     const userId = req.params.userId;
 
     const [user, metadata] = await sequelize.query(
-      "SELECT id, username, email, role FROM user WHERE id = $userId",
+      "SELECT * FROM user WHERE id = $userId;",
       {
         bind: { userId },
         type: QueryTypes.SELECT,
       }
     );
 
-    return res.json(user);
+    return res.send(user);
   } catch (error) {
-    return null;
+    return error;
   }
 };
 
-exports.createNewUser = async (req, res) => {
+/* exports.createNewUser = async (req, res) => {
   const user = req.body.user;
 
   const [newUserId] = await sequelize.query("INSERT INTO user VALUES $user;", {
@@ -39,10 +39,10 @@ exports.createNewUser = async (req, res) => {
   });
 
   return res.json(newUserId);
-};
+}; */
 
 exports.updateUser = async (req, res) => {
-  const userId = req.params.userId || req.body.userId;
+  const userId = req.params.userId;
 
   const { username, password, email, role } = req.body;
 
@@ -51,15 +51,21 @@ exports.updateUser = async (req, res) => {
   if (email) email = email;
   if (role) role = role;
 
-  const [updatedUserId] = await sequelize.query(
+  const [updatedUser, metadata] = await sequelize.query(
     `UPDATE user SET (username = $username, password = $password, email = $email, role = $role) WHERE id = $userId RETURNING *`,
     {
-      bind: { user: user, userId: userId },
+      bind: {
+        userId: userId,
+        username: username,
+        password: password,
+        email: email,
+        role: role,
+      },
       type: QueryTypes.UPDATE,
     }
   );
 
-  return res.sendStatus(201);
+  return res.sendStatus(201).send(updatedUser);
 };
 
 exports.deleteUserById = async (req, res) => {

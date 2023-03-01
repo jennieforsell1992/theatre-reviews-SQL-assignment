@@ -38,3 +38,33 @@ exports.getAllTheatresInCity = async (req, res) => {
     return error;
   }
 };
+
+exports.createNewTheatre = async (req, res) => {
+  try {
+    const { theatreName, address, phoneNumber, desc, email, owner, city } =
+      req.body;
+
+    await sequelize.query(
+      `INSERT INTO theatre (theatreName, address, phoneNumber, desc, email, fk_user_id, fk_city_id)
+        VALUES
+        ($theatreName, $address, $phoneNumber, $desc, $email, (SELECT id FROM user WHERE username = $owner), (SELECT id FROM city WHERE cityname = $city));
+        `,
+      {
+        bind: {
+          theatreName: theatreName,
+          address: address,
+          phoneNumber: phoneNumber,
+          desc: desc,
+          email: email,
+          owner: owner,
+          city: city,
+        },
+      }
+    );
+    return res.status(201).json({
+      message: `Theatre ${theatreName} added.`,
+    });
+  } catch (error) {
+    return null;
+  }
+};
