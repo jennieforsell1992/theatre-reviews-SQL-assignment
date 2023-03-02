@@ -17,6 +17,6 @@ router.get("/", isAuthenticated, authorizeRoles(userRoles.ADMIN), getAllUsers);
 router.get("/:userId", getUserById);
 //router.post("/", createNewUser);
 router.put("/:userId", updateUser);
-router.delete("/:userId", deleteUserById);
+router.delete("/:userId", isAuthenticated, deleteUserById);
 
 module.exports = router;

@@ -1,6 +1,7 @@
 const { sequelize } = require("../database/config");
 const { QueryTypes } = require("sequelize");
 const { UnauthorizedError } = require("../utils/errors");
+const { userRoles } = require("../constants/users");
 
 exports.getAllUsers = async (req, res) => {
   try {
