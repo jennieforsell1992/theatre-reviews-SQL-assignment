@@ -30,17 +30,6 @@ exports.getUserById = async (req, res) => {
   }
 };
 
-/* exports.createNewUser = async (req, res) => {
-  const user = req.body.user;
-
-  const [newUserId] = await sequelize.query("INSERT INTO user VALUES $user;", {
-    bind: { user: user },
-    type: QueryTypes.INSERT,
-  });
-
-  return res.json(newUserId);
-}; */
-
 exports.updateUser = async (req, res) => {
   const userId = req.params.userId;
 

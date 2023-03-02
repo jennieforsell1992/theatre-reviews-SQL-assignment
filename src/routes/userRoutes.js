@@ -8,8 +8,12 @@ const {
   updateUser,
   deleteUserById,
 } = require("../controllers/userController");
+const {
+  isAuthenticated,
+  authorizeRoles,
+} = require("../middleware/authenticationMiddleware");
 
-router.get("/", getAllUsers);
+router.get("/", isAuthenticated, authorizeRoles(userRoles.ADMIN), getAllUsers);
 router.get("/:userId", getUserById);
 //router.post("/", createNewUser);
 router.put("/:userId", updateUser);
