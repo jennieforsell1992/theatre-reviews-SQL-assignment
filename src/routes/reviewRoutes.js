@@ -16,6 +16,6 @@ router.get("/:theatreId/reviews", getAllReviewsFromTheatre);
 router.get("/:theatreId/reviews/:reviewId", getReviewById);
 router.post("/:theatreId/reviews", createReview);
 router.put("/:theatreId/reviews/:reviewId", updateReview);
-router.delete(":cityId/:theatreId/reviews/:reviewId");
+router.delete("/:theatreId/reviews/:reviewId", deleteReview);
 
 module.exports = router;
