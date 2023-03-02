@@ -19,7 +19,6 @@ exports.isAuthenticated = async (req, res, next) => {
 
   try {
     // Get the token payload (contents); user info
-    console.log("hej");
     const payload = jwt.verify(token, process.env.JWT_SECRET);
 
     // Place the token info on the request object (create a new "user" field)

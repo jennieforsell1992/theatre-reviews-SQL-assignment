@@ -5,6 +5,7 @@ const {
   getTheatreById,
   getAllTheatresInCity,
   createNewTheatre,
+  updateTheatre,
 } = require("../controllers/theatreController");
 const {
   isAuthenticated,
@@ -22,7 +23,14 @@ router.post(
   authorizeRoles(userRoles.OWNER),
   createNewTheatre
 );
-router.put(":cityId/:theatreId");
+
+//Update theatre
+router.put(
+  "/:cityId/:theatreId",
+  isAuthenticated,
+  authorizeRoles(userRoles.OWNER),
+  updateTheatre
+);
 router.delete(":cityId/:theatreId");
 
 module.exports = router;
