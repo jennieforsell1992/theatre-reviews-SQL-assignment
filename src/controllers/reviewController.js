@@ -123,4 +123,15 @@ exports.updateReview = async (req, res) => {
   return res.sendStatus(200).send(updatedReview);
 };
 
-exports.deleteReview = async (req, res) => {};
+exports.deleteReview = async (req, res) => {
+  const reviewId = req.params.reviewId;
+
+  const [results, metadata] = await sequelize.query(
+    `DELETE FROM review WHERE id = $reviewId RETURNING *`,
+    {
+      bind: { reviewId },
+    }
+  );
+
+  return res.sendStatus(200);
+};
