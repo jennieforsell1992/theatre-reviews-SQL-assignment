@@ -44,7 +44,7 @@ exports.createNewTheatre = async (req, res) => {
     const { theatreName, address, phoneNumber, desc, email, owner, city } =
       req.body;
 
-    await sequelize.query(
+    const [newTheatreId] = await sequelize.query(
       `INSERT INTO theatre (theatreName, address, phoneNumber, desc, email, fk_user_id, fk_city_id)
         VALUES
         ($theatreName, $address, $phoneNumber, $desc, $email, (SELECT id FROM user WHERE username = $owner), (SELECT id FROM city WHERE cityname = $city));
@@ -61,9 +61,15 @@ exports.createNewTheatre = async (req, res) => {
         },
       }
     );
-    return res.status(201).json({
-      message: `Theatre ${theatreName} added.`,
-    });
+    return res
+      .setHeader(
+        "Location",
+        `${req.protocol}://${req.headers.host}/api/v1/:cityId/${newTheatreId}`
+      )
+      .status(201)
+      .json({
+        message: `Theatre ${theatreName} added.`,
+      });
   } catch (error) {
     return null;
   }

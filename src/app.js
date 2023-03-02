@@ -22,6 +22,8 @@ app.use((req, res, next) => {
 });
 
 /* Routes */
+app.use("/api/v1/", reviewRoutes);
+app.use("/api/v1", theatreRoutes);
 app.use("/api/v1", reviewRoutes);
 app.use("/api/v1/", theatreRoutes);
 app.use("/api/v1/users", userRoutes);

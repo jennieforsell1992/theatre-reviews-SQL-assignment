@@ -1,6 +1,8 @@
 const { sequelize } = require("../database/config");
 const { QueryTypes } = require("sequelize");
 const { UnauthorizedError } = require("../utils/errors");
+const { userRoles } = require("../constants/users");
+const bcrypt = require("bcrypt");
 
 exports.getAllUsers = async (req, res) => {
   try {
@@ -33,20 +35,18 @@ exports.getUserById = async (req, res) => {
 exports.updateUser = async (req, res) => {
   const userId = req.params.userId;
 
-  const { username, password, email, role } = req.body;
+  let { username, password, email, role } = req.body;
 
-  if (username) username = username;
-  if (password) password = password;
-  if (email) email = email;
-  if (role) role = role;
+  const salt = await bcrypt.genSalt(10);
+  const hashedpassword = await bcrypt.hash(password, salt);
 
   const [updatedUser, metadata] = await sequelize.query(
-    `UPDATE user SET (username = $username, password = $password, email = $email, role = $role) WHERE id = $userId RETURNING *`,
+    `UPDATE user SET username = $username, password = $password, email = $email, role = $role WHERE id = $userId RETURNING *;`,
     {
       bind: {
         userId: userId,
         username: username,
-        password: password,
+        password: hashedpassword,
         email: email,
         role: role,
       },
@@ -60,7 +60,8 @@ exports.updateUser = async (req, res) => {
 exports.deleteUserById = async (req, res) => {
   const userId = req.params.userId;
 
-  if (userId != req.user?.userId) {
+  //ADMIN kan ta bort alla konton, medans OWNER & USER kan bara ta bort sitt egna konto och inte någon annans.
+  if (userId != req.user?.userId && req.user.role !== userRoles.ADMIN) {
     throw new UnauthorizedError("Can only delete your own account");
   }
 
