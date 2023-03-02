@@ -84,7 +84,7 @@ exports.updateTheatre = async (req, res) => {
 
     const userId = req.user?.userId;
 
-    const [theatreToUpdateUserId] = await sequelize.query(
+    const [theatreToUpdateUserId, theatreMetadata] = await sequelize.query(
       `SELECT fk_user_id FROM theatre WHERE id = $theatreId AND fk_user_id = $userId;`,
       {
         bind: {
@@ -95,8 +95,8 @@ exports.updateTheatre = async (req, res) => {
       }
     );
 
-    if (theatreToUpdateUserId != userId) {
-      return new UnauthorizedError("Sorry");
+    if (!theatreToUpdateUserId) {
+      throw new UnauthorizedError("Sorry");
     }
 
     const [updatedTheatre, metadata] = await sequelize.query(
@@ -120,6 +120,6 @@ exports.updateTheatre = async (req, res) => {
     return res.sendStatus(201).send(updatedTheatre);
   } catch (error) {
     console.log(error);
-    return error;
+    return res.sendStatus(403);
   }
 };
