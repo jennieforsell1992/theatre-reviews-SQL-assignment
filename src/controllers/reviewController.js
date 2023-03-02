@@ -87,7 +87,40 @@ exports.createReview = async (req, res) => {
 exports.updateReview = async (req, res) => {
   const reviewId = req.params.reviewId;
 
-  const { mainText, rating, fk_user_id, fk_theatre_id } = req.body;
+  const { mainText, rating } = req.body;
+
+  if (!mainText && !rating) {
+    throw new BadRequestError("You need to add a mainText and/or a rating!");
+  }
+
+  if (!mainText) {
+    const [updatedReview, metadata] = await sequelize.query(
+      `UPDATE review SET rating = $rating
+      WHERE id = $reviewId RETURNING *;`,
+      {
+        bind: {
+          reviewId: reviewId,
+          rating: rating,
+        },
+        type: QueryTypes.UPDATE,
+      }
+    );
+  } else {
+    const [updatedReview, metadata] = await sequelize.query(
+      `UPDATE review SET mainText = $mainText, rating = $rating
+      WHERE id = $reviewId RETURNING *;`,
+      {
+        bind: {
+          reviewId: reviewId,
+          mainText: mainText,
+          rating: rating,
+        },
+        type: QueryTypes.UPDATE,
+      }
+    );
+  }
+
+  return res.sendStatus(200).send(updatedReview);
 };
 
 exports.deleteReview = async (req, res) => {};

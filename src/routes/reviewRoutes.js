@@ -12,12 +12,10 @@ const {
   authorizeRoles,
 } = require("../middleware/authenticationMiddleware");
 
-//get all reviews
 router.get("/:theatreId/reviews", getAllReviewsFromTheatre);
-//Get review by Id from theatre
 router.get("/:theatreId/reviews/:reviewId", getReviewById);
 router.post("/:theatreId/reviews", createReview);
-router.put(":cityId/:theatreId/reviews/:reviewId");
+router.put("/:theatreId/reviews/:reviewId", updateReview);
 router.delete(":cityId/:theatreId/reviews/:reviewId");
 
 module.exports = router;
