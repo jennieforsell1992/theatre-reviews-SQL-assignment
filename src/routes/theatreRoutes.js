@@ -14,10 +14,10 @@ const {
 } = require("../middleware/authenticationMiddleware");
 
 //get all theatres
-router.get(":cityId", getAllTheatresInCity);
+router.get("/:cityId", getAllTheatresInCity);
 
 //Get theatre by city id and theatre id
-router.get(":cityId/:theatreId", getTheatreById);
+router.get("/:cityId/:theatreId", getTheatreById);
 router.post(
   "/:cityId",
   isAuthenticated,
