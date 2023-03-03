@@ -83,6 +83,7 @@ exports.updateTheatre = async (req, res) => {
       req.body;
 
     const userId = req.user?.userId;
+    console.log(req.user?.role);
 
     const [theatreToUpdateUserId, theatreMetadata] = await sequelize.query(
       `SELECT fk_user_id FROM theatre WHERE id = $theatreId AND fk_user_id = $userId;`,
@@ -96,7 +97,9 @@ exports.updateTheatre = async (req, res) => {
     );
 
     if (!theatreToUpdateUserId) {
-      throw new UnauthorizedError("Sorry");
+      throw new UnauthorizedError(
+        "Sorry, you don't have the right access to do this."
+      );
     }
 
     const [updatedTheatre, metadata] = await sequelize.query(
@@ -117,9 +120,46 @@ exports.updateTheatre = async (req, res) => {
       }
     );
 
-    return res.sendStatus(201).send(updatedTheatre);
+    return res.sendStatus(200).send(updatedTheatre);
   } catch (error) {
     console.log(error);
     return res.sendStatus(403);
   }
+};
+
+exports.deleteTheatre = async (req, res) => {
+  const theatreId = req.params.theatreId;
+
+  const userId = req.user?.userId;
+  console.log(req.user?.role);
+
+  const [theatreToDeleteUserId, theatreMetadata] = await sequelize.query(
+    `SELECT fk_user_id FROM theatre WHERE id = $theatreId AND fk_user_id = $userId;`,
+    {
+      bind: {
+        theatreId,
+        userId,
+      },
+      type: QueryTypes.SELECT,
+    }
+  );
+
+  if (!theatreToDeleteUserId) {
+    throw new UnauthorizedError(
+      "Sorry, you don't have the right access to do this."
+    );
+  }
+
+  await sequelize.query(
+    `DELETE FROM theatre WHERE id = $theatreId AND fk_user_id = $userId RETURNING *;`,
+    {
+      bind: {
+        theatreId,
+        userId,
+      },
+      type: QueryTypes.DELETE,
+    }
+  );
+
+  return res.json("Theatre deleted!").sendStatus(204);
 };
