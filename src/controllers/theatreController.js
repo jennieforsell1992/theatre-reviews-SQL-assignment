@@ -17,7 +17,7 @@ exports.getTheatreById = async (req, res) => {
   return res.send(theatre);
 };
 
-exports.getAllTheatresInCity = async (req, res) => {
+exports.getAllTheatres = async (req, res) => {
   const cityId = req.params.cityId;
 
   const [theatres, metadata] = await sequelize.query(

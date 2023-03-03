@@ -3,7 +3,7 @@ const router = express.Router();
 const { userRoles } = require("../constants/users");
 const {
   getTheatreById,
-  getAllTheatresInCity,
+  getAllTheatres,
   createNewTheatre,
   updateTheatre,
   deleteTheatre,
@@ -21,12 +21,12 @@ const {
 } = require("../middleware/authenticationMiddleware");
 
 //get all theatres
-router.get("/:cityId", getAllTheatresInCity);
+router.get("/", getAllTheatres);
 
-//Get theatre by city id and theatre id
-router.get("/:cityId/:theatreId", getTheatreById);
+//Get theatre by theatre id
+router.get("/:theatreId", getTheatreById);
 router.post(
-  "/:cityId",
+  "/",
   isAuthenticated,
   authorizeRoles(userRoles.OWNER),
   createNewTheatre
@@ -34,13 +34,13 @@ router.post(
 
 //Update theatre
 router.put(
-  "/:cityId/:theatreId",
+  "/:theatreId",
   isAuthenticated,
   authorizeRoles(userRoles.OWNER),
   updateTheatre
 );
 router.delete(
-  "/:cityId/:theatreId",
+  "/:theatreId",
   isAuthenticated,
   authorizeRoles(userRoles.OWNER),
   deleteTheatre
