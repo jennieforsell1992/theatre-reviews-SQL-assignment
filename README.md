@@ -16,7 +16,7 @@ This is the tech stack we used for this project:
 - SQLite
 
 ## 🤝 Our Team
-Our team has consisted of three front end devloper students at Medieinstitutet in Stockholm.
+Our team consists of three front end devloper students at Medieinstitutet in Stockholm.
 
 #### Jennie Forsell
 - [Github](https://github.com/jennieforsell1992)
