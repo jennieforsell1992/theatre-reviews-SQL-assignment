@@ -1,9 +1,8 @@
 require("dotenv").config();
 require("express-async-errors");
 const express = require("express");
-const reviewRoutes = require("./routes/reviewRoutes");
 const authRoutes = require("./routes/authRoutes");
-const theatreRoutes = require("./routes/theatreRoutes");
+const theatreRoutes = require("./routes/theatreAndReviewRoutes");
 const userRoutes = require("./routes/userRoutes");
 const { errorMiddleware } = require("./middleware/errorMiddleware");
 const { notFoundMiddleware } = require("./middleware/notFoundMiddleware");
@@ -25,8 +24,7 @@ app.use((req, res, next) => {
 
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/auth", authRoutes);
-app.use("/api/v1", reviewRoutes);
-app.use("/api/v1/", theatreRoutes);
+app.use("/api/v1/theatres", theatreRoutes);
 
 /* Error Handling */
 app.use(notFoundMiddleware);
