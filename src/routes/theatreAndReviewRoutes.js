@@ -9,6 +9,13 @@ const {
   deleteTheatre,
 } = require("../controllers/theatreController");
 const {
+  getAllReviewsFromTheatre,
+  getReviewById,
+  createReview,
+  updateReview,
+  deleteReview,
+} = require("../controllers/reviewController");
+const {
   isAuthenticated,
   authorizeRoles,
 } = require("../middleware/authenticationMiddleware");
@@ -33,10 +40,16 @@ router.put(
   updateTheatre
 );
 router.delete(
-  ":cityId/:theatreId",
+  "/:cityId/:theatreId",
   isAuthenticated,
   authorizeRoles(userRoles.OWNER),
   deleteTheatre
 );
+
+router.get("/:theatreId/reviews", getAllReviewsFromTheatre);
+router.get("/:theatreId/reviews/:reviewId", getReviewById);
+router.post("/:theatreId/reviews", isAuthenticated, createReview);
+router.put("/:theatreId/reviews/:reviewId", isAuthenticated, updateReview);
+router.delete("/:theatreId/reviews/:reviewId", isAuthenticated, deleteReview);
 
 module.exports = router;

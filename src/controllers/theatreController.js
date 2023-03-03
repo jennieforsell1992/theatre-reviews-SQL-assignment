@@ -120,7 +120,7 @@ exports.updateTheatre = async (req, res) => {
       }
     );
 
-    return res.sendStatus(201).send(updatedTheatre);
+    return res.sendStatus(200).send(updatedTheatre);
   } catch (error) {
     console.log(error);
     return res.sendStatus(403);
@@ -150,7 +150,7 @@ exports.deleteTheatre = async (req, res) => {
     );
   }
 
-  const [deletedTheatre, metadata] = await sequelize.query(
+  await sequelize.query(
     `DELETE FROM theatre WHERE id = $theatreId AND fk_user_id = $userId RETURNING *;`,
     {
       bind: {
@@ -161,5 +161,5 @@ exports.deleteTheatre = async (req, res) => {
     }
   );
 
-  return res.sendStatus(204).send(deletedTheatre);
+  return res.json("Theatre deleted!").sendStatus(204);
 };

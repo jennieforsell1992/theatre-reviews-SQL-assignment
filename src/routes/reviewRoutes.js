@@ -1,4 +1,4 @@
-const express = require("express");
+/* const express = require("express");
 const router = express.Router();
 const {
   getAllReviewsFromTheatre,
@@ -19,3 +19,4 @@ router.put("/:theatreId/reviews/:reviewId", isAuthenticated, updateReview);
 router.delete("/:theatreId/reviews/:reviewId", isAuthenticated, deleteReview);
 
 module.exports = router;
+ */

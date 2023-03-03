@@ -6,40 +6,32 @@ const jwt = require("jsonwebtoken");
 const { userRoles } = require("../constants/users");
 
 exports.getAllReviewsFromTheatre = async (req, res) => {
-  try {
-    const theatreId = req.params.theatreId;
+  const theatreId = req.params.theatreId;
 
-    const [reviews, metadata] = await sequelize.query(
-      "SELECT * FROM review WHERE fk_theatre_id = $theatreId;",
-      {
-        bind: { theatreId },
-        // type: QueryTypes.SELECT,
-      }
-    );
-    console.log(reviews);
+  const [reviews, metadata] = await sequelize.query(
+    "SELECT * FROM review WHERE fk_theatre_id = $theatreId;",
+    {
+      bind: { theatreId },
+      // type: QueryTypes.SELECT,
+    }
+  );
+  console.log(reviews);
 
-    return res.send(reviews);
-  } catch (error) {
-    return null;
-  }
+  return res.send(reviews);
 };
 
 exports.getReviewById = async (req, res) => {
-  try {
-    const theatreId = req.params.theatreId;
-    const reviewId = req.params.reviewId;
+  const theatreId = req.params.theatreId;
+  const reviewId = req.params.reviewId;
 
-    const [review, metadata] = await sequelize.query(
-      "SELECT * FROM review WHERE fk_theatre_id = $theatreId AND id = $reviewId",
-      {
-        bind: { theatreId, reviewId },
-      }
-    );
+  const [review, metadata] = await sequelize.query(
+    "SELECT * FROM review WHERE fk_theatre_id = $theatreId AND id = $reviewId",
+    {
+      bind: { theatreId, reviewId },
+    }
+  );
 
-    return res.send(review);
-  } catch (error) {
-    return error;
-  }
+  return res.send(review);
 };
 
 exports.createReview = async (req, res) => {
