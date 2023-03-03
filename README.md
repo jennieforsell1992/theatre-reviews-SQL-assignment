@@ -36,6 +36,7 @@ To get our application to run on your machine Follow these steps.
 
 3. Create a .env file with the following variables
 ---
+**ENV**
 PORT=XXXX
 JWT_SECRET=XXXX
 ---
