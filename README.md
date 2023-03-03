@@ -1,21 +1,21 @@
-# Theatre Review site API
+# 🎭 Theatre Review site API
 A group assignment in "API-Utveckling" at Medieinstitutet.
 
 Table of contents
 
 
 
-## About the project
+## 📜 About the project
 This project is a group assignment to create an API for a "theatre review site". It is supposed to handle login/registration, user information, theatre information and reviews for said theatres.
 
-## Built with
+## 💻 Tech Stack
 This is the tech stack we used for this project:
 - JavaScript
 - NodeJs
 - Express
 - SQLite
 
-## Our Team
+## 🤝 Our Team
 Our team has consisted of three front end devloper students at Medieinstitutet in Stockholm.
 
 ###### Jennie Forsell
@@ -27,7 +27,7 @@ Our team has consisted of three front end devloper students at Medieinstitutet i
 ###### Marcus Reineck
 - [Github](https://github.com/MarcusRei)
 
-## Getting started
+## 🏃‍♀️ Getting started
 To get our application to run on your machine Follow these steps.
 
 1. Clone the repo
