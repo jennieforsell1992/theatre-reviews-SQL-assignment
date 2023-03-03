@@ -19,7 +19,7 @@ router.get(
   authorizeRoles(userRoles.ADMIN),
   getUserById
 );
-router.put("/:userId", isAuthenticated, updateUser);
+router.put("/:userId", updateUser);
 router.delete("/:userId", isAuthenticated, deleteUserById);
 
 module.exports = router;

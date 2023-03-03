@@ -37,8 +37,8 @@ exports.updateUser = async (req, res) => {
 
   let { username, password, email, role } = req.body;
 
-  const salt = await bcrypt.genSalt(10);
-  const hashedpassword = await bcrypt.hash(password, salt);
+  // const salt = await bcrypt.genSalt(10);
+  // const hashedpassword = await bcrypt.hash(password, salt);
 
   const [updatedUser, metadata] = await sequelize.query(
     `UPDATE user SET username = $username, password = $password, email = $email, role = $role WHERE id = $userId RETURNING *;`,
@@ -46,7 +46,7 @@ exports.updateUser = async (req, res) => {
       bind: {
         userId: userId,
         username: username,
-        password: hashedpassword,
+        password: password,
         email: email,
         role: role,
       },

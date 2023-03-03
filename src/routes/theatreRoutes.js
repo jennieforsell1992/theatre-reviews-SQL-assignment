@@ -6,6 +6,7 @@ const {
   getAllTheatresInCity,
   createNewTheatre,
   updateTheatre,
+  deleteTheatre,
 } = require("../controllers/theatreController");
 const {
   isAuthenticated,
@@ -31,6 +32,11 @@ router.put(
   authorizeRoles(userRoles.OWNER),
   updateTheatre
 );
-router.delete(":cityId/:theatreId");
+router.delete(
+  ":cityId/:theatreId",
+  isAuthenticated,
+  authorizeRoles(userRoles.OWNER),
+  deleteTheatre
+);
 
 module.exports = router;
