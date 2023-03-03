@@ -4,12 +4,11 @@ const { UnauthorizedError, NotFoundError } = require("../utils/errors");
 
 exports.getTheatreById = async (req, res) => {
   const theatreId = req.params.theatreId;
-  const cityId = req.params.cityId;
 
   const [theatre, metadata] = await sequelize.query(
-    "SELECT * FROM theatre WHERE fk_city_id = $cityId AND id = $theatreId;",
+    "SELECT * FROM theatre WHERE id = $theatreId;",
     {
-      bind: { theatreId, cityId },
+      bind: { theatreId },
       type: QueryTypes.SELECT,
     }
   );
@@ -18,7 +17,7 @@ exports.getTheatreById = async (req, res) => {
 };
 
 exports.getAllTheatres = async (req, res) => {
-  const cityId = req.params.cityId;
+  const { cityId } = req.body;
 
   const [theatres, metadata] = await sequelize.query(
     "SELECT * FROM theatre WHERE fk_city_id = $cityId;",
@@ -54,7 +53,7 @@ exports.createNewTheatre = async (req, res) => {
   return res
     .setHeader(
       "Location",
-      `${req.protocol}://${req.headers.host}/api/v1/:cityId/${newTheatreId}`
+      `${req.protocol}://${req.headers.host}/api/v1/${newTheatreId}`
     )
     .status(201)
     .json({
