@@ -14,8 +14,8 @@ const {
 
 router.get("/:theatreId/reviews", getAllReviewsFromTheatre);
 router.get("/:theatreId/reviews/:reviewId", getReviewById);
-router.post("/:theatreId/reviews", createReview);
+router.post("/:theatreId/reviews", isAuthenticated, createReview);
 router.put("/:theatreId/reviews/:reviewId", updateReview);
-router.delete("/:theatreId/reviews/:reviewId", deleteReview);
+router.delete("/:theatreId/reviews/:reviewId", isAuthenticated, deleteReview);
 
 module.exports = router;
