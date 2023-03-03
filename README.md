@@ -18,13 +18,13 @@ This is the tech stack we used for this project:
 ## 🤝 Our Team
 Our team has consisted of three front end devloper students at Medieinstitutet in Stockholm.
 
-###### Jennie Forsell
+#### Jennie Forsell
 - [Github](https://github.com/jennieforsell1992)
 
-###### Wilma Wiker
+#### Wilma Wiker
 - [Github](https://github.com/wilmawiker)
 
-###### Marcus Reineck
+#### Marcus Reineck
 - [Github](https://github.com/MarcusRei)
 
 ## 🏃‍♀️ Getting started
