@@ -3,6 +3,7 @@ const { QueryTypes } = require("sequelize");
 const { UnauthorizedError, BadRequestError } = require("../utils/errors");
 const { cityId } = require("../constants/cities");
 const jwt = require("jsonwebtoken");
+const { userRoles } = require("../constants/users");
 
 exports.getAllReviewsFromTheatre = async (req, res) => {
   try {
@@ -104,11 +105,49 @@ exports.updateReview = async (req, res) => {
 
   const { mainText, rating } = req.body;
 
+  //Get username from token
+  let token;
+  // Grab the Authorization header
+  const authHeader = req.headers.authorization;
+
+  // Check it contains JWT token and extract the token
+  if (authHeader && authHeader.startsWith("Bearer")) {
+    token = authHeader.split(" ")[1];
+  }
+
+  // Get userId from token
+  const payload = jwt.verify(token, process.env.JWT_SECRET);
+  const userId = payload.userId;
+  const role = payload.role;
+  console.log(payload);
+
+  console.log(userRoles.ADMIN);
+  console.log(role);
+
+  //Check if correct user or ADMIN
+
+  //get review from DB
+  const [reviewMatch, metadata] = await sequelize.query(
+    `SELECT fk_user_id FROM review WHERE Id = $reviewId;`,
+    {
+      bind: {
+        reviewId: reviewId,
+      },
+      type: QueryTypes.SELECT,
+    }
+  );
+
+  if (reviewMatch.fk_user_id !== userId || role !== userRoles.ADMIN) {
+    throw new UnauthorizedError("You can only update your own reviews");
+  }
+
+  //If nothing
   if (!mainText && !rating) {
     throw new BadRequestError("You need to add a mainText and/or a rating!");
   }
 
-  if (!mainText) {
+  //If only rating
+  if (!mainText && rating) {
     const [updatedReview, metadata] = await sequelize.query(
       `UPDATE review SET rating = $rating
       WHERE id = $reviewId RETURNING *;`,
@@ -121,18 +160,34 @@ exports.updateReview = async (req, res) => {
       }
     );
   } else {
-    const [updatedReview, metadata] = await sequelize.query(
-      `UPDATE review SET mainText = $mainText, rating = $rating
-      WHERE id = $reviewId RETURNING *;`,
-      {
-        bind: {
-          reviewId: reviewId,
-          mainText: mainText,
-          rating: rating,
-        },
-        type: QueryTypes.UPDATE,
-      }
-    );
+    //If only maintext
+    if (mainText && !rating) {
+      const [updatedReview, metadata] = await sequelize.query(
+        `UPDATE review SET mainText = $mainText
+        WHERE id = $reviewId RETURNING *;`,
+        {
+          bind: {
+            reviewId: reviewId,
+            mainText: mainText,
+          },
+          type: QueryTypes.UPDATE,
+        }
+      );
+    } else {
+      //If both
+      const [updatedReview, metadata] = await sequelize.query(
+        `UPDATE review SET mainText = $mainText, rating = $rating
+        WHERE id = $reviewId RETURNING *;`,
+        {
+          bind: {
+            reviewId: reviewId,
+            mainText: mainText,
+            rating: rating,
+          },
+          type: QueryTypes.UPDATE,
+        }
+      );
+    }
   }
 
   return res.sendStatus(200).send(updatedReview);
