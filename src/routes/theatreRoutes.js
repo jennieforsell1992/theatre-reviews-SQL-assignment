@@ -33,7 +33,7 @@ router.put(
   updateTheatre
 );
 router.delete(
-  ":cityId/:theatreId",
+  "/:cityId/:theatreId",
   isAuthenticated,
   authorizeRoles(userRoles.OWNER),
   deleteTheatre
