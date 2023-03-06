@@ -35,8 +35,8 @@ To get our application to run on your machine Follow these steps.
 
 4. Run the script "populate".
 ---
-**ENV**
-PORT=XXXX
+**ENV**  
+PORT=XXXX  
 JWT_SECRET=XXXX
 ---
 
