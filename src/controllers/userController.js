@@ -69,5 +69,5 @@ exports.deleteUserById = async (req, res) => {
     }
   );
 
-  return res.sendStatus(204);
+  return res.sendStatus(204).send("This user has been deleted");
 };
