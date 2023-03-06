@@ -1,10 +1,13 @@
-<<<<<<< HEAD
 const express = require("express");
-const { userRoles } = require("../constants/users");
-=======
-/* const express = require("express");
->>>>>>> 54a503644ff95b5a99d4974c6ab00cf96ab6471c
 const router = express.Router();
+const { userRoles } = require("../constants/users");
+const {
+  getTheatreById,
+  getAllTheatres,
+  createNewTheatre,
+  updateTheatre,
+  deleteTheatre,
+} = require("../controllers/theatreController");
 const {
   getAllReviewsFromTheatre,
   getReviewById,
@@ -17,24 +20,36 @@ const {
   authorizeRoles,
 } = require("../middleware/authenticationMiddleware");
 
-<<<<<<< HEAD
-router.get("/:theatreId/reviews", isAuthenticated, getAllReviewsFromTheatre);
-router.get("/:theatreId/reviews/:reviewId", isAuthenticated, getReviewById);
-router.post("/:theatreId/reviews", isAuthenticated, createReview);
-router.put("/:theatreId/reviews/:reviewId", isAuthenticated, updateReview);
-router.delete(
-  "/:theatreId/reviews/:reviewId",
+//get all theatres
+router.get("/", getAllTheatres);
+
+//Get theatre by theatre id
+router.get("/:theatreId", getTheatreById);
+router.post(
+  "/",
   isAuthenticated,
   authorizeRoles(userRoles.OWNER),
-  deleteReview
+  createNewTheatre
 );
-=======
+
+//Update theatre
+router.put(
+  "/:theatreId",
+  isAuthenticated,
+  authorizeRoles(userRoles.OWNER),
+  updateTheatre
+);
+router.delete(
+  "/:theatreId",
+  isAuthenticated,
+  authorizeRoles(userRoles.OWNER),
+  deleteTheatre
+);
+
 router.get("/:theatreId/reviews", getAllReviewsFromTheatre);
 router.get("/:theatreId/reviews/:reviewId", getReviewById);
 router.post("/:theatreId/reviews", isAuthenticated, createReview);
 router.put("/:theatreId/reviews/:reviewId", isAuthenticated, updateReview);
 router.delete("/:theatreId/reviews/:reviewId", isAuthenticated, deleteReview);
->>>>>>> 54a503644ff95b5a99d4974c6ab00cf96ab6471c
 
 module.exports = router;
- */

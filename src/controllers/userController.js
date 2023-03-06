@@ -5,37 +5,34 @@ const { userRoles } = require("../constants/users");
 const bcrypt = require("bcrypt");
 
 exports.getAllUsers = async (req, res) => {
-  try {
-    const [users, metadata] = await sequelize.query("SELECT * FROM user;");
-    console.log(users);
-    return res.send(users);
-  } catch (error) {
-    return null;
-  }
+  const [users, metadata] = await sequelize.query("SELECT * FROM user;");
+
+  return res.send(users);
 };
 
 exports.getUserById = async (req, res) => {
-  try {
-    const userId = req.params.userId;
+  const userId = req.params.userId;
 
-    const [user, metadata] = await sequelize.query(
-      "SELECT * FROM user WHERE id = $userId;",
-      {
-        bind: { userId },
-        type: QueryTypes.SELECT,
-      }
-    );
+  const [user, metadata] = await sequelize.query(
+    "SELECT * FROM user WHERE id = $userId;",
+    {
+      bind: { userId },
+      type: QueryTypes.SELECT,
+    }
+  );
 
-    return res.send(user);
-  } catch (error) {
-    return error;
-  }
+  return res.send(user);
 };
 
 exports.updateUser = async (req, res) => {
   const userId = req.params.userId;
 
   let { username, password, email, role } = req.body;
+
+  //ADMIN kan ändra alla konton, medans OWNER & USER kan endast ändra sina egna konto-uppgifter
+  if (userId != req.user?.userId && req.user.role !== userRoles.ADMIN) {
+    throw new UnauthorizedError("You can only update your own account");
+  }
 
   const salt = await bcrypt.genSalt(10);
   const hashedpassword = await bcrypt.hash(password, salt);
@@ -62,7 +59,7 @@ exports.deleteUserById = async (req, res) => {
 
   //ADMIN kan ta bort alla konton, medans OWNER & USER kan bara ta bort sitt egna konto och inte någon annans.
   if (userId != req.user?.userId && req.user.role !== userRoles.ADMIN) {
-    throw new UnauthorizedError("Can only delete your own account");
+    throw new UnauthorizedError("You can only delete your own account");
   }
 
   const [results, metadata] = await sequelize.query(
