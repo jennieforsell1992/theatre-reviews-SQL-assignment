@@ -1,4 +1,5 @@
 const express = require("express");
+const { userRoles } = require("../constants/users");
 const router = express.Router();
 const {
   getAllReviewsFromTheatre,
@@ -12,10 +13,15 @@ const {
   authorizeRoles,
 } = require("../middleware/authenticationMiddleware");
 
-router.get("/:theatreId/reviews", getAllReviewsFromTheatre);
-router.get("/:theatreId/reviews/:reviewId", getReviewById);
-router.post("/:theatreId/reviews", createReview);
-router.put("/:theatreId/reviews/:reviewId", updateReview);
-router.delete("/:theatreId/reviews/:reviewId", deleteReview);
+router.get("/:theatreId/reviews", isAuthenticated, getAllReviewsFromTheatre);
+router.get("/:theatreId/reviews/:reviewId", isAuthenticated, getReviewById);
+router.post("/:theatreId/reviews", isAuthenticated, createReview);
+router.put("/:theatreId/reviews/:reviewId", isAuthenticated, updateReview);
+router.delete(
+  "/:theatreId/reviews/:reviewId",
+  isAuthenticated,
+  authorizeRoles(userRoles.OWNER),
+  deleteReview
+);
 
 module.exports = router;
