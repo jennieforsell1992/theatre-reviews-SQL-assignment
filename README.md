@@ -1,9 +1,6 @@
 # 🎭 Theatre Review site API
 A group assignment in "API-Utveckling" at Medieinstitutet.
 
-Table of contents
-
-
 
 ## 📜 About the project
 This project is a group assignment to create an API for a "theatre review site". It is supposed to handle login/registration, user information, theatre information and reviews for said theatres.
@@ -49,14 +46,14 @@ email: Jocke@email.com
 password: password
 
 #### Malin Åkerman (ADMIN)
-email: Malin@email.com
+email: Malin@email.com  
 password: Malin123
 
 #### Erik Garbo (OWNER)
-email: Erik@email.com
+email: Erik@email.com  
 password: ErikSecret
 
 #### Henrik Kavel (OWNER)
-email: Henrik@email.com
+email: Henrik@email.com  
 password: ManOfSteel
 
