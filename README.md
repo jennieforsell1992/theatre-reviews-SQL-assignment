@@ -39,7 +39,7 @@ To get our application to run on your machine, follow these steps.
 
 2. Install the NPM packages
 
-3. Create a .env file with the following variables
+3. Create a .env file with the following variables  
    PORT=XXXX  
    JWT_SECRET=XXXX
 
