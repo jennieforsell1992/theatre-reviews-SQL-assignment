@@ -1,9 +1,6 @@
 # 🎭 Theatre Review site API
 A group assignment in "API-Utveckling" at Medieinstitutet.
 
-Table of contents
-
-
 
 ## 📜 About the project
 This project is a group assignment to create an API for a "theatre review site". It is supposed to handle login/registration, user information, theatre information and reviews for said theatres.
@@ -28,18 +25,39 @@ Our team consists of three front end devloper students at Medieinstitutet in Sto
 - [Github](https://github.com/MarcusRei)
 
 ## 🏃‍♀️ Getting started
-To get our application to run on your machine Follow these steps.
+To get our application to run on your machine, follow these steps.
 
 1. Clone the repo
 
 2. Install the NPM pakcages
 
 3. Create a .env file with the following variables
----
-**ENV**
-PORT=XXXX
+---  
+PORT=XXXX  
 JWT_SECRET=XXXX
 ---
 
-## Testing logins
-more to come soon!
+4. Run the script "populate".
+---
+## ENV  
+PORT=XXXX  
+JWT_SECRET=XXXX
+---
+
+## 👥 Logins for testing
+#### Joakim Fenix (USER)
+email: Jocke@email.com  
+password: password
+
+#### Malin Åkerman (ADMIN)
+email: Malin@email.com  
+password: Malin123
+
+#### Erik Garbo (OWNER)
+email: Erik@email.com  
+password: ErikSecret
+
+#### Henrik Kavel (OWNER)
+email: Henrik@email.com  
+password: ManOfSteel
+
