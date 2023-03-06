@@ -32,15 +32,19 @@ To get our application to run on your machine Follow these steps.
 2. Install the NPM pakcages
 
 3. Create a .env file with the following variables
-
-4. Run the script "populate".
----
-**ENV**  
+---  
 PORT=XXXX  
 JWT_SECRET=XXXX
 ---
 
-## Logins for testing
+4. Run the script "populate".
+---
+## ENV  
+PORT=XXXX  
+JWT_SECRET=XXXX
+---
+
+## 👥 Logins for testing
 #### Joakim Fenix (USER)
 email: Jocke@email.com  
 password: password
