@@ -3,6 +3,7 @@ const { QueryTypes } = require("sequelize");
 const { UnauthorizedError } = require("../utils/errors");
 const { userRoles } = require("../constants/users");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 exports.getAllUsers = async (req, res) => {
   const [users, metadata] = await sequelize.query("SELECT * FROM user;");
@@ -29,29 +30,67 @@ exports.updateUser = async (req, res) => {
 
   let { username, password, email, role } = req.body;
 
-  //ADMIN kan ändra alla konton, medans OWNER & USER kan endast ändra sina egna konto-uppgifter
-  if (userId != req.user?.userId && req.user.role !== userRoles.ADMIN) {
-    throw new UnauthorizedError("You can only update your own account");
+  //Get username from token
+  let token;
+  // Grab the Authorization header
+  const authHeader = req.headers.authorization;
+
+  // Check it contains JWT token and extract the token
+  if (authHeader && authHeader.startsWith("Bearer")) {
+    token = authHeader.split(" ")[1];
   }
+
+  // Get userId from token
+  const payload = jwt.verify(token, process.env.JWT_SECRET);
+  const jwtUserId = payload.userId;
+  const jwtRole = payload.role;
+  console.log(jwtUserId);
+  console.log(userId);
 
   const salt = await bcrypt.genSalt(10);
   const hashedpassword = await bcrypt.hash(password, salt);
 
-  const [updatedUser, metadata] = await sequelize.query(
-    `UPDATE user SET username = $username, password = $password, email = $email, role = $role WHERE id = $userId RETURNING *;`,
-    {
-      bind: {
-        userId: userId,
-        username: username,
-        password: hashedpassword,
-        email: email,
-        role: role,
-      },
-      type: QueryTypes.UPDATE,
+  if (jwtRole === userRoles.ADMIN) {
+    const [updatedUser, metadata] = await sequelize.query(
+      `UPDATE user SET username = $username, password = $password, email = $email, role = $role WHERE id = $userId RETURNING *;`,
+      {
+        bind: {
+          userId: userId,
+          username: username,
+          password: hashedpassword,
+          email: email,
+          role: role,
+        },
+        type: QueryTypes.UPDATE,
+      }
+    );
+    return res
+      .sendStatus(200)
+      .send(updatedUser + "Updated with admin privileges");
+  } else {
+    if (email || role) {
+      throw new UnauthorizedError(
+        "Only an admin can change your role and email"
+      );
     }
-  );
 
-  return res.sendStatus(201).send(updatedUser);
+    if (jwtUserId != userId) {
+      throw new UnauthorizedError("You can only update your own account");
+    }
+
+    const [updatedUser, metadata] = await sequelize.query(
+      `UPDATE user SET username = $username, password = $password WHERE id = $userId RETURNING *;`,
+      {
+        bind: {
+          userId: userId,
+          username: username,
+          password: hashedpassword,
+        },
+        type: QueryTypes.UPDATE,
+      }
+    );
+    return res.sendStatus(200).send(updatedUser);
+  }
 };
 
 exports.deleteUserById = async (req, res) => {
