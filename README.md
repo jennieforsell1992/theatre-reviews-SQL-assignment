@@ -42,7 +42,7 @@ JWT_SECRET=XXXX
 
 ## Logins for testing
 #### Joakim Fenix (USER)
-email: Jocke@email.com
+email: Jocke@email.com  
 password: password
 
 #### Malin Åkerman (ADMIN)
