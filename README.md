@@ -25,7 +25,7 @@ Our team consists of three front end devloper students at Medieinstitutet in Sto
 - [Github](https://github.com/MarcusRei)
 
 ## 🏃‍♀️ Getting started
-To get our application to run on your machine Follow these steps.
+To get our application to run on your machine, follow these steps.
 
 1. Clone the repo
 
