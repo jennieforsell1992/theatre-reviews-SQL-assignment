@@ -96,7 +96,11 @@ const seedTheatresDb = async () => {
 
        ("Kulturhuset stadsteatern", "Sergels Torg Norrmalm, 111 57 Stockholm", "08-506 202 00", "Stadsteatern är en teater som ligger inuti Stockholms kulturhus. Byggnaden ligger även i anslutning till Sergelstorg.", "stadsteater@gmail.com", (SELECT id FROM user WHERE username = "Erik Garbo"), (SELECT id FROM city WHERE cityname = "Stockholm")),
 
-       ("Uppsala stadsteater", "Kungsgatan 53, 753 21 Uppsala", "018-14 62 00", "Uppsala stadsteater är Sveriges tredje största stadsteater. Vi producerar ett brett program med klassiker och ny dramatik som speglar vår samtid. Här finns något för alla! Alltifrån ny utmanande scenkonst till familjeföreställningar. Storslagna teaterupplevelser på Stora scenen och nära möten med våra skådespelare i monologer på våra mindre scener.", "Uppsalastadsteater@live.se", (SELECT id FROM user WHERE username = "Henrik Kavel"), (SELECT id FROM city WHERE cityname = "Uppsala"));
+       ("Uppsala stadsteater", "Kungsgatan 53, 753 21 Uppsala", "018-14 62 00", "Uppsala stadsteater är Sveriges tredje största stadsteater. Vi producerar ett brett program med klassiker och ny dramatik som speglar vår samtid. Här finns något för alla! Alltifrån ny utmanande scenkonst till familjeföreställningar. Storslagna teaterupplevelser på Stora scenen och nära möten med våra skådespelare i monologer på våra mindre scener.", "Uppsalastadsteater@live.se", (SELECT id FROM user WHERE username = "Henrik Kavel"), (SELECT id FROM city WHERE cityname = "Uppsala")),
+       
+       ("Kulturhuset Spira", "Kulturgatan 3, 553 24 Jönköping", "010-242 80 80", "Här presenterar Smålands Musik och Teater ett varierat utbud av musikal, musik, teater och dans för barn, ungdomar och vuxna, i och utanför Jönköpings län", "spira@jönkmail.se", (SELECT id FROM user WHERE username = "Henrik Kavel"), (SELECT id FROM city WHERE cityname = "Jönköping")),
+
+       ("Huskvarna teater", "Jönköpingsvägen 17, 561 31 Huskvarna", "08-590 812 63", "Föreningen Teater i Huskvarna bildades den 14 juni 1993 för att främja ett allsidigt teaterliv i Huskvarna", "Öxne4lyfe@huskmail.se", (SELECT id FROM user WHERE username = "Henrik Kavel"), (SELECT id FROM city WHERE cityname = "Jönköping"));
        `
     );
 
