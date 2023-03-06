@@ -39,12 +39,7 @@ router.put(
   authorizeRoles(userRoles.OWNER),
   updateTheatre
 );
-router.delete(
-  "/:theatreId",
-  isAuthenticated,
-  authorizeRoles(userRoles.OWNER),
-  deleteTheatre
-);
+router.delete("/:theatreId", isAuthenticated, deleteTheatre);
 
 router.get("/:theatreId/reviews", getAllReviewsFromTheatre);
 router.get("/:theatreId/reviews/:reviewId", getReviewById);

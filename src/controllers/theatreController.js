@@ -1,6 +1,8 @@
 const { sequelize } = require("../database/config");
 const { QueryTypes } = require("sequelize");
 const { UnauthorizedError, NotFoundError } = require("../utils/errors");
+const jwt = require("jsonwebtoken");
+const { userRoles } = require("../constants/users");
 
 exports.getTheatreById = async (req, res) => {
   const theatreId = req.params.theatreId;
@@ -19,14 +21,18 @@ exports.getTheatreById = async (req, res) => {
 exports.getAllTheatres = async (req, res) => {
   const { cityId } = req.body;
 
-  const [theatres, metadata] = await sequelize.query(
-    "SELECT * FROM theatre WHERE fk_city_id = $cityId;",
-    {
-      bind: { cityId },
-    }
-  );
-
-  return res.send(theatres);
+  if (cityId) {
+    const [theatres, metadata] = await sequelize.query(
+      "SELECT * FROM theatre WHERE fk_city_id = $cityId",
+      {
+        bind: { cityId },
+      }
+    );
+    return res.send(theatres);
+  } else {
+    const [theatres, metadata] = await sequelize.query("SELECT * FROM theatre");
+    return res.send(theatres);
+  }
 };
 
 exports.createNewTheatre = async (req, res) => {
@@ -111,36 +117,65 @@ exports.updateTheatre = async (req, res) => {
 exports.deleteTheatre = async (req, res) => {
   const theatreId = req.params.theatreId;
 
-  const userId = req.user?.userId;
-  console.log(req.user?.role);
+  let token;
 
-  const [theatreToDeleteUserId, theatreMetadata] = await sequelize.query(
-    `SELECT fk_user_id FROM theatre WHERE id = $theatreId AND fk_user_id = $userId;`,
-    {
-      bind: {
-        theatreId,
-        userId,
-      },
-      type: QueryTypes.SELECT,
-    }
-  );
+  const authHeader = req.headers.authorization;
 
-  if (!theatreToDeleteUserId) {
-    throw new UnauthorizedError(
-      "Sorry, you don't have the right access to do this."
-    );
+  if (authHeader && authHeader.startsWith("Bearer")) {
+    token = authHeader.split(" ")[1];
   }
 
-  await sequelize.query(
-    `DELETE FROM theatre WHERE id = $theatreId AND fk_user_id = $userId RETURNING *;`,
-    {
-      bind: {
-        theatreId,
-        userId,
-      },
-      type: QueryTypes.DELETE,
+  const payload = jwt.verify(token, process.env.JWT_SECRET);
+  const userId = payload.userId;
+  const role = payload.role;
+  console.log(payload);
+
+  console.log(role);
+
+  if (role === userRoles.ADMIN) {
+    await sequelize.query(
+      `DELETE FROM theatre WHERE id = $theatreId RETURNING *;`,
+      {
+        bind: {
+          theatreId,
+        },
+        type: QueryTypes.DELETE,
+      }
+    );
+    console.log("hej");
+  } else {
+    //Hämtar user_id från teater
+    const [theatreToDeleteUserId, theatreMetadata] = await sequelize.query(
+      `SELECT fk_user_id FROM theatre WHERE id = $theatreId AND fk_user_id = $userId;`,
+      {
+        bind: {
+          theatreId,
+          userId,
+        },
+        type: QueryTypes.SELECT,
+      }
+    );
+    console.log("hejsan");
+
+    if (theatreToDeleteUserId.fk_user_id !== userId) {
+      throw new UnauthorizedError(
+        "Sorry, you don't have the right access to do this."
+      );
     }
-  );
+
+    console.log(role);
+
+    await sequelize.query(
+      `DELETE FROM theatre WHERE id = $theatreId AND fk_user_id = $userId RETURNING *;`,
+      {
+        bind: {
+          theatreId,
+          userId,
+        },
+        type: QueryTypes.DELETE,
+      }
+    );
+  }
 
   return res.json("Theatre deleted!").sendStatus(204);
 };
