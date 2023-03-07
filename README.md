@@ -17,7 +17,7 @@ This is the tech stack we used for this project:
 
 ## Our Database design
 
-![DB Design](src\assets\Theatre_reviews.png)
+![DB Design]([src\assets\Theatre_reviews.png](https://ibb.co/KzM3wsR))
 
 ## 🤝 Our Team
 
