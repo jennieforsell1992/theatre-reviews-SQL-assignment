@@ -25,22 +25,14 @@ router.get("/", getAllTheatres);
 
 //Get theatre by theatre id
 router.get("/:theatreId", getTheatreById);
-router.post(
-  "/",
-  isAuthenticated,
-  authorizeRoles(userRoles.OWNER),
-  createNewTheatre
-);
+//Create new theatre
+router.post("/", isAuthenticated, createNewTheatre);
 
 //Update theatre
-router.put(
-  "/:theatreId",
-  isAuthenticated,
-  authorizeRoles(userRoles.OWNER, userRoles.ADMIN),
-  updateTheatre
-);
+router.put("/:theatreId", isAuthenticated, updateTheatre);
 router.delete("/:theatreId", isAuthenticated, deleteTheatre);
 
+/* Reviews */
 router.get("/:theatreId/reviews", getAllReviewsFromTheatre);
 router.get("/:theatreId/reviews/:reviewId", getReviewById);
 router.post("/:theatreId/reviews", isAuthenticated, createReview);

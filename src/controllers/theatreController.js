@@ -39,32 +39,55 @@ exports.createNewTheatre = async (req, res) => {
   const { theatreName, address, phoneNumber, desc, email, owner, city } =
     req.body;
 
-  const [newTheatreId] = await sequelize.query(
-    `INSERT INTO theatre (theatreName, address, phoneNumber, desc, email, fk_user_id, fk_city_id)
-        VALUES
-        ($theatreName, $address, $phoneNumber, $desc, $email, (SELECT id FROM user WHERE username = $owner), (SELECT id FROM city WHERE cityname = $city));
-        `,
-    {
-      bind: {
-        theatreName: theatreName,
-        address: address,
-        phoneNumber: phoneNumber,
-        desc: desc,
-        email: email,
-        owner: owner,
-        city: city,
-      },
-    }
-  );
-  return res
-    .setHeader(
-      "Location",
-      `${req.protocol}://${req.headers.host}/api/v1/${newTheatreId}`
-    )
-    .status(201)
-    .json({
-      message: `Theatre ${theatreName} added.`,
-    });
+  //Get username from token
+  let token;
+  // Grab the Authorization header
+  const authHeader = req.headers.authorization;
+
+  // Check it contains JWT token and extract the token
+  if (authHeader && authHeader.startsWith("Bearer")) {
+    token = authHeader.split(" ")[1];
+  }
+
+  // Get userId from token
+  const payload = jwt.verify(token, process.env.JWT_SECRET);
+  const userId = payload.userId;
+  const role = payload.role;
+  console.log(payload);
+
+  if (role === userRoles.ADMIN || userRoles.OWNER) {
+    const [newTheatreId] = await sequelize.query(
+      `INSERT INTO theatre (theatreName, address, phoneNumber, desc, email, fk_user_id, fk_city_id)
+          VALUES
+          ($theatreName, $address, $phoneNumber, $desc, $email, (SELECT id FROM user WHERE username = $owner), (SELECT id FROM city WHERE cityname = $city));
+          `,
+      {
+        bind: {
+          theatreName: theatreName,
+          address: address,
+          phoneNumber: phoneNumber,
+          desc: desc,
+          email: email,
+          owner: owner,
+          city: city,
+        },
+      }
+    );
+
+    return res
+      .setHeader(
+        "Location",
+        `${req.protocol}://${req.headers.host}/api/v1/${newTheatreId}`
+      )
+      .status(201)
+      .json({
+        message: `Theatre ${theatreName} added.`,
+      });
+  } else {
+    throw new UnauthorizedError(
+      "You must be either ADMIN or OWNER to add a new theatre"
+    );
+  }
 };
 
 exports.updateTheatre = async (req, res) => {
@@ -73,45 +96,81 @@ exports.updateTheatre = async (req, res) => {
   const { theatreName, address, phoneNumber, desc, email, owner, city } =
     req.body;
 
-  const userId = req.user?.userId;
-  console.log(req.user?.role);
+  //Get username from token
+  let token;
+  // Grab the Authorization header
+  const authHeader = req.headers.authorization;
 
-  const [theatreToUpdateUserId, theatreMetadata] = await sequelize.query(
-    `SELECT fk_user_id FROM theatre WHERE id = $theatreId AND fk_user_id = $userId;`,
-    {
-      bind: {
-        theatreId,
-        userId,
-      },
-      type: QueryTypes.SELECT,
-    }
-  );
-
-  if (!theatreToUpdateUserId) {
-    throw new UnauthorizedError(
-      "Sorry, you don't have the right access to do this."
-    );
+  // Check it contains JWT token and extract the token
+  if (authHeader && authHeader.startsWith("Bearer")) {
+    token = authHeader.split(" ")[1];
   }
 
-  const [updatedTheatre, metadata] = await sequelize.query(
-    `UPDATE theatre SET theatreName = $theatreName, address = $address, phoneNumber = $phoneNumber, desc = $desc, email = $email, fk_user_id = (SELECT id FROM user WHERE userName = $owner), fk_city_id = (SELECT id FROM city WHERE cityName = $city) WHERE id = $theatreId AND fk_user_id = $userId RETURNING *;`,
-    {
-      bind: {
-        theatreId,
-        theatreName: theatreName,
-        address: address,
-        phoneNumber: phoneNumber,
-        desc: desc,
-        email: email,
-        owner: owner,
-        city: city,
-        userId,
-      },
-      type: QueryTypes.UPDATE,
-    }
-  );
+  // Get userId from token
+  const payload = jwt.verify(token, process.env.JWT_SECRET);
+  const userId = payload.userId;
+  const role = payload.role;
+  console.log(theatreId);
+  console.log(userId);
 
-  return res.sendStatus(200).send(updatedTheatre);
+  if (role === userRoles.ADMIN) {
+    const [updatedTheatre, metadata] = await sequelize.query(
+      `UPDATE theatre SET theatreName = $theatreName, address = $address, phoneNumber = $phoneNumber, desc = $desc, email = $email, fk_user_id = (SELECT id FROM user WHERE userName = $owner), fk_city_id = (SELECT id FROM city WHERE cityName = $city) WHERE id = $theatreId AND fk_user_id = $userId RETURNING *;`,
+      {
+        bind: {
+          theatreId,
+          theatreName: theatreName,
+          address: address,
+          phoneNumber: phoneNumber,
+          desc: desc,
+          email: email,
+          owner: owner,
+          city: city,
+          userId,
+        },
+        type: QueryTypes.UPDATE,
+      }
+    );
+    return res.sendStatus(200);
+  } else {
+    const [theatreToUpdateUserId, theatreMetadata] = await sequelize.query(
+      `SELECT fk_user_id FROM theatre WHERE id = $theatreId AND fk_user_id = $userId;`,
+      {
+        bind: {
+          theatreId,
+          userId,
+        },
+        type: QueryTypes.SELECT,
+      }
+    );
+
+    if (!theatreToUpdateUserId) {
+      throw new UnauthorizedError(
+        "Sorry, you don't have the right access to do this."
+      );
+    }
+
+    if (theatreToUpdateUserId.fk_user_id === userId) {
+      const [updatedTheatre, metadata] = await sequelize.query(
+        `UPDATE theatre SET theatreName = $theatreName, address = $address, phoneNumber = $phoneNumber, desc = $desc, email = $email, fk_user_id = (SELECT id FROM user WHERE userName = $owner), fk_city_id = (SELECT id FROM city WHERE cityName = $city) WHERE id = $theatreId AND fk_user_id = $userId RETURNING *;`,
+        {
+          bind: {
+            theatreId,
+            theatreName: theatreName,
+            address: address,
+            phoneNumber: phoneNumber,
+            desc: desc,
+            email: email,
+            owner: owner,
+            city: city,
+            userId: userId,
+          },
+          type: QueryTypes.UPDATE,
+        }
+      );
+    }
+    return res.sendStatus(200);
+  }
 };
 
 exports.deleteTheatre = async (req, res) => {

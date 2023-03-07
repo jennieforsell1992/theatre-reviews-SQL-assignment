@@ -6,6 +6,25 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 exports.getAllUsers = async (req, res) => {
+  //Get username from token
+  let token;
+  // Grab the Authorization header
+  const authHeader = req.headers.authorization;
+
+  // Check it contains JWT token and extract the token
+  if (authHeader && authHeader.startsWith("Bearer")) {
+    token = authHeader.split(" ")[1];
+  }
+
+  // Get userId from token
+  const payload = jwt.verify(token, process.env.JWT_SECRET);
+  const userId = payload.userId;
+  const role = payload.role;
+
+  if (role !== userRoles.ADMIN) {
+    throw new UnauthorizedError("Only an admin can see all users");
+  }
+
   const [users, metadata] = await sequelize.query("SELECT * FROM user;");
 
   return res.send(users);
@@ -13,6 +32,24 @@ exports.getAllUsers = async (req, res) => {
 
 exports.getUserById = async (req, res) => {
   const userId = req.params.userId;
+
+  //Get username from token
+  let token;
+  // Grab the Authorization header
+  const authHeader = req.headers.authorization;
+
+  // Check it contains JWT token and extract the token
+  if (authHeader && authHeader.startsWith("Bearer")) {
+    token = authHeader.split(" ")[1];
+  }
+
+  // Get userId from token
+  const payload = jwt.verify(token, process.env.JWT_SECRET);
+  const role = payload.role;
+
+  if (role !== userRoles.ADMIN) {
+    throw new UnauthorizedError("Only an admin can see any users");
+  }
 
   const [user, metadata] = await sequelize.query(
     "SELECT * FROM user WHERE id = $userId;",

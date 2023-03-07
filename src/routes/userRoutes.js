@@ -12,13 +12,8 @@ const {
   authorizeRoles,
 } = require("../middleware/authenticationMiddleware");
 
-router.get("/", isAuthenticated, authorizeRoles(userRoles.ADMIN), getAllUsers);
-router.get(
-  "/:userId",
-  isAuthenticated,
-  authorizeRoles(userRoles.ADMIN),
-  getUserById
-);
+router.get("/", isAuthenticated, getAllUsers);
+router.get("/:userId", isAuthenticated, getUserById);
 router.put("/:userId", isAuthenticated, updateUser);
 router.delete("/:userId", isAuthenticated, deleteUserById);
 
