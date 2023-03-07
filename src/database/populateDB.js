@@ -114,7 +114,7 @@ const seedTheatresDb = async () => {
       fk_user_id INTEGER NOT NULL,
       fk_theatre_id INTEGER NOT NULL,
       FOREIGN KEY(fk_user_id) REFERENCES user(id) ON DELETE CASCADE,
-      FOREIGN KEY(fk_theatre_id) REFERENCES theatre(id)
+      FOREIGN KEY(fk_theatre_id) REFERENCES theatre(id) ON DELETE CASCADE
     );
     `);
 

@@ -30,7 +30,9 @@ exports.getAllTheatres = async (req, res) => {
     );
     return res.send(theatres);
   } else {
-    const [theatres, metadata] = await sequelize.query("SELECT * FROM theatre");
+    const [theatres, metadata] = await sequelize.query(
+      "SELECT * FROM theatre LIMIT 10"
+    );
     return res.send(theatres);
   }
 };

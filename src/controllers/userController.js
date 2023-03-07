@@ -25,7 +25,9 @@ exports.getAllUsers = async (req, res) => {
     throw new UnauthorizedError("Only an admin can see all users");
   }
 
-  const [users, metadata] = await sequelize.query("SELECT * FROM user;");
+  const [users, metadata] = await sequelize.query(
+    "SELECT * FROM user LIMIT 10;"
+  );
 
   return res.send(users);
 };
@@ -145,5 +147,5 @@ exports.deleteUserById = async (req, res) => {
     }
   );
 
-  return res.sendStatus(204).send("This user has been deleted");
+  return res.sendStatus(204);
 };

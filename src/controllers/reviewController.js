@@ -9,10 +9,9 @@ exports.getAllReviewsFromTheatre = async (req, res) => {
   const theatreId = req.params.theatreId;
 
   const [reviews, metadata] = await sequelize.query(
-    "SELECT * FROM review WHERE fk_theatre_id = $theatreId;",
+    "SELECT * FROM review WHERE fk_theatre_id = $theatreId LIMIT 5;",
     {
       bind: { theatreId },
-      // type: QueryTypes.SELECT,
     }
   );
   console.log(reviews);
