@@ -17,7 +17,7 @@ This is the tech stack we used for this project:
 
 ## Our Database design
 
-![DB Design](/posts/path/to/img.jpg "Optional title")
+![DB Design](src\assets\Theatre_reviews.png)
 
 ## 🤝 Our Team
 
