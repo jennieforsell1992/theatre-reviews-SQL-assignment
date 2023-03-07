@@ -15,6 +15,10 @@ This is the tech stack we used for this project:
 - Express
 - SQLite
 
+## Our Database design
+
+![DB Design](/posts/path/to/img.jpg "Optional title")
+
 ## 🤝 Our Team
 
 Our team consists of three front end devloper students at Medieinstitutet in Stockholm.
