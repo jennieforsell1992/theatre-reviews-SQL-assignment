@@ -1,0 +1,576 @@
+{
+	"info": {
+		"_postman_id": "e907883d-3c38-4380-be50-ab62ac582e1e",
+		"name": "Teater-recensioner",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25160455"
+	},
+	"item": [
+		{
+			"name": "Theatres",
+			"item": [
+				{
+					"name": "Get all theatres",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/theatres/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"theatres",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get theatre by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/theatres/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"theatres",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new theatre",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsInVzZXJuYW1lIjoiTWFsaW4gw4VrZXJtYW4iLCJlbWFpbCI6Ik1hbGluQGVtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTY3ODE5MDE0OCwiZXhwIjoxNjc4MTkzNzQ4fQ.F5NeOnTazGoKWp6aJjgy3URhEkgRCrbFkj7ke8Q7V3Y",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"theatreName\": \"Demo teater\",\r\n    \"address\": \"Kungsgatan 53\",\r\n    \"phoneNumber\": \"034-135709\",\r\n    \"desc\": \"En teater för demosyften\",\r\n    \"email\": \"demo@demoTeatern.com\",\r\n    \"owner\": \"Erik Garbo\",\r\n    \"city\": \"Stockholm\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/theatres/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"theatres",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update theatre",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsInVzZXJuYW1lIjoiRXJpayBHYXJibyIsImVtYWlsIjoiRXJpa0BlbWFpbC5jb20iLCJyb2xlIjoiT1dORVIiLCJpYXQiOjE2NzgxOTA5NjQsImV4cCI6MTY3ODE5NDU2NH0.fe-3l8QLNfMEzqTT72l7wOWd0JUzaba2QRG_XX8hS3U",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"theatreName\": \"Uppdaterad teater\",\r\n    \"address\": \"Nygatan 2\",\r\n    \"phoneNumber\": \"59081263\",\r\n    \"desc\": \"Uppdaterad beskrivning\",\r\n    \"email\": \"uppdaterad@email.se\",\r\n    \"owner\": \"Erik Garbo\",\r\n    \"city\": \"Uppsala\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/theatres/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"theatres",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete theatre",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsInVzZXJuYW1lIjoiRXJpayBHYXJibyIsImVtYWlsIjoiRXJpa0BlbWFpbC5jb20iLCJyb2xlIjoiT1dORVIiLCJpYXQiOjE2NzgxODQ5OTYsImV4cCI6MTY3ODE4ODU5Nn0.6ZXlc6-tdVzyb_OMfAHEutkj5NTWWxXjCqrxabx8ek0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/theatres/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"theatres",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get all users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsInVzZXJuYW1lIjoiRXJpayBHYXJibyIsImVtYWlsIjoiRXJpa0BlbWFpbC5jb20iLCJyb2xlIjoiT1dORVIiLCJpYXQiOjE2NzgxOTA5NjQsImV4cCI6MTY3ODE5NDU2NH0.fe-3l8QLNfMEzqTT72l7wOWd0JUzaba2QRG_XX8hS3U",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/users/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsInVzZXJuYW1lIjoiRXJpayBHYXJibyIsImVtYWlsIjoiRXJpa0BlbWFpbC5jb20iLCJyb2xlIjoiT1dORVIiLCJpYXQiOjE2NzgxOTA5NjQsImV4cCI6MTY3ODE5NDU2NH0.fe-3l8QLNfMEzqTT72l7wOWd0JUzaba2QRG_XX8hS3U",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/users/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsInVzZXJuYW1lIjoiRXJpayBHYXJibyIsImVtYWlsIjoiRXJpa0BlbWFpbC5jb20iLCJyb2xlIjoiT1dORVIiLCJpYXQiOjE2NzgxODQ5OTYsImV4cCI6MTY3ODE4ODU5Nn0.6ZXlc6-tdVzyb_OMfAHEutkj5NTWWxXjCqrxabx8ek0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"UpdatedName\",\r\n\"password\": \"nyttlösenord\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/users/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsInVzZXJuYW1lIjoiTWFsaW4gw4VrZXJtYW4iLCJlbWFpbCI6Ik1hbGluQGVtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTY3ODE5Mzc0MCwiZXhwIjoxNjc4MTk3MzQwfQ.IOTWF7Kh9YrVL6msU1DfzoVjyvfjKYoHQA7_1ty7peM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/users/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reviews",
+			"item": [
+				{
+					"name": "Get all reviews from a theatre",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/theatres/2/reviews",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"theatres",
+								"2",
+								"reviews"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get review by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/theatres/1/reviews/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"theatres",
+								"1",
+								"reviews",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new review",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsInVzZXJuYW1lIjoiRXJpayBHYXJibyIsImVtYWlsIjoiRXJpa0BlbWFpbC5jb20iLCJyb2xlIjoiT1dORVIiLCJpYXQiOjE2NzgxODQ5OTYsImV4cCI6MTY3ODE4ODU5Nn0.6ZXlc6-tdVzyb_OMfAHEutkj5NTWWxXjCqrxabx8ek0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"mainText\": \"Den är kanske bra\",\r\n    \"rating\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/theatres/1/reviews/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"theatres",
+								"1",
+								"reviews",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update review",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsInVzZXJuYW1lIjoiRXJpayBHYXJibyIsImVtYWlsIjoiRXJpa0BlbWFpbC5jb20iLCJyb2xlIjoiT1dORVIiLCJpYXQiOjE2NzgxODQ5OTYsImV4cCI6MTY3ODE4ODU5Nn0.6ZXlc6-tdVzyb_OMfAHEutkj5NTWWxXjCqrxabx8ek0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"mainText\": \"Den var inte bra heller\",\r\n    \"rating\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/theatres/1/reviews/7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"theatres",
+								"1",
+								"reviews",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete review",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsInVzZXJuYW1lIjoiRXJpayBHYXJibyIsImVtYWlsIjoiRXJpa0BlbWFpbC5jb20iLCJyb2xlIjoiT1dORVIiLCJpYXQiOjE2NzgxODQ5OTYsImV4cCI6MTY3ODE4ODU5Nn0.6ZXlc6-tdVzyb_OMfAHEutkj5NTWWxXjCqrxabx8ek0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/theatres/1/reviews/7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"theatres",
+								"1",
+								"reviews",
+								"7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register new user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"newUser\",\r\n    \"password\": \"password123\",\r\n    \"email\": \"new@email.com\",\r\n    \"role\": \"USER\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjksInVzZXJuYW1lIjoiSm9oYW5uYSIsImVtYWlsIjoiSm9oYW5uYUBlbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE2Nzc2ODM2MzksImV4cCI6MTY3NzY4NzIzOX0.B49aRayDn19GOK0RP2iL3zpx65M1rOZ7UcjH7zLi6Vc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"email\": \"Malin@email.com\",\r\n\"password\": \"Malin123\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
