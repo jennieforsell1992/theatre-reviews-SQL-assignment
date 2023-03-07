@@ -155,7 +155,12 @@ exports.deleteTheatre = async (req, res) => {
         type: QueryTypes.SELECT,
       }
     );
-    console.log("hejsan");
+
+    if (theatreToDeleteUserId === undefined) {
+      throw new UnauthorizedError(
+        "Sorry, you don't have the right access to do this."
+      );
+    }
 
     if (theatreToDeleteUserId.fk_user_id !== userId) {
       throw new UnauthorizedError(

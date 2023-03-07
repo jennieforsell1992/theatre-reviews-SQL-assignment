@@ -36,7 +36,7 @@ router.post(
 router.put(
   "/:theatreId",
   isAuthenticated,
-  authorizeRoles(userRoles.OWNER),
+  authorizeRoles(userRoles.OWNER, userRoles.ADMIN),
   updateTheatre
 );
 router.delete("/:theatreId", isAuthenticated, deleteTheatre);

@@ -7,6 +7,9 @@ const userRoutes = require("./routes/userRoutes");
 const { errorMiddleware } = require("./middleware/errorMiddleware");
 const { notFoundMiddleware } = require("./middleware/notFoundMiddleware");
 const { sequelize } = require("./database/config");
+const cors = require("cors");
+const helmet = require("helmet");
+const xss = require("xss-clean");
 
 /* Create app */
 const app = express();
@@ -19,6 +22,19 @@ app.use((req, res, next) => {
   console.log(`Processing ${req.method} request to ${req.path}`);
   next();
 });
+
+/* Security */
+
+app.use(
+  cors({
+    origin: "http://localhost:4000",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
+
+app.use(helmet());
+
+app.use(xss());
 
 /* Routes */
 

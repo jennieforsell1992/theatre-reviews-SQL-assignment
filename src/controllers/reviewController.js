@@ -134,6 +134,10 @@ exports.updateReview = async (req, res) => {
     }
   );
 
+  if (reviewMatch === undefined) {
+    throw new UnauthorizedError("You can only update your own reviews!");
+  }
+
   if (role === userRoles.ADMIN) {
     const [updatedReview, metadata] = await sequelize.query(
       `UPDATE review SET mainText = $mainText, rating = $rating
@@ -199,6 +203,10 @@ exports.deleteReview = async (req, res) => {
       type: QueryTypes.SELECT,
     }
   );
+
+  if (reviewMatch === undefined) {
+    throw new UnauthorizedError("You can only delete your own reviews!");
+  }
 
   if (role === userRoles.ADMIN) {
     const [results, metadata] = await sequelize.query(
