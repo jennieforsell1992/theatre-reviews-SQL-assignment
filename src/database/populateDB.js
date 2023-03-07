@@ -239,6 +239,55 @@ const seedTheatresDb = async () => {
       ),
 
       (
+        "Tack för en fin vistelse, kommer garanterat tillbaka!",
+        4,
+        (SELECT id FROM user WHERE username = "Joakim Fenix"),
+        (SELECT id FROM theatre WHERE theatreName = "Uppsala stadsteater")
+      ),
+
+      (
+        "Stor besvikelse över hur scenen såg ut... den va väldigt sliten och gammal, kanske behövs en renovering?",
+        2,
+        (SELECT id FROM user WHERE username = "Joakim Fenix"),
+        (SELECT id FROM theatre WHERE theatreName = "Huskvarna teater")
+      ),
+
+      (
+        "Härlig atmosfär, luftig lokal och trevlig personal. Otroligt fin föreställning!",
+        4,
+        (SELECT id FROM user WHERE username = "Malin Åkerman"),
+        (SELECT id FROM theatre WHERE theatreName = "Kulturhuset Spira")
+      ),
+
+      (
+        "Lite besviken på föreställningen... de har dock fräscha toaletter, det är ju ett plus!",
+        4,
+        (SELECT id FROM user WHERE username = "Erik Garbo"),
+        (SELECT id FROM theatre WHERE theatreName = "Kulturhuset Spira")
+      ),
+
+      (
+        "Den här teater var något utöver det vanliga, fantastisk att det kan finnas en sån teater i en liten stad som Huskvarna. Jag kommer garanterat komma hit fler gånger!",
+        2,
+        (SELECT id FROM user WHERE username = "Erik Garbo"),
+        (SELECT id FROM theatre WHERE theatreName = "Huskvarna teater")
+      ),
+
+      (
+        "Wow, väldigt imponerad av den här teatern! bra personal, bra mat, bra dryck och fantastiska skådespelare.",
+        4,
+        (SELECT id FROM user WHERE username = "Henrik Kavel"),
+        (SELECT id FROM theatre WHERE theatreName = "Uppsala stadsteater")
+      ),
+
+      (
+        "Jag såg föreställningen Bodyguard, båda huvudrollsinnehavarna hade underbara sångröster. Den här föreställningen rekommenderar jag starkt!!",
+        3,
+        (SELECT id FROM user WHERE username = "Malin Åkerman"),
+        (SELECT id FROM theatre WHERE theatreName = "Chinateatern")
+      ),
+
+      (
         "Klassisk & genuin teater. Mysigt att det gamla var bevarat.",
         4,
         (SELECT id FROM user WHERE username = "Henrik Kavel"),
