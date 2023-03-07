@@ -15,9 +15,9 @@ This is the tech stack we used for this project:
 - Express
 - SQLite
 
-## Our Database design
+## 📚 Our Database design
 
-![DB Design](src\assets\Theatre_reviews.png)
+![DB Design](https://i.ibb.co/WpbYtzq/Theatre-reviews.png)
 
 ## 🤝 Our Team
 
