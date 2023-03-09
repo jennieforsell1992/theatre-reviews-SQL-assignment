@@ -1,5 +1,4 @@
 const express = require("express");
-const { userRoles } = require("../constants/users");
 const router = express.Router();
 const {
   getAllUsers,
@@ -7,10 +6,7 @@ const {
   updateUser,
   deleteUserById,
 } = require("../controllers/userController");
-const {
-  isAuthenticated,
-  authorizeRoles,
-} = require("../middleware/authenticationMiddleware");
+const { isAuthenticated } = require("../middleware/authenticationMiddleware");
 
 router.get("/", isAuthenticated, getAllUsers);
 router.get("/:userId", isAuthenticated, getUserById);

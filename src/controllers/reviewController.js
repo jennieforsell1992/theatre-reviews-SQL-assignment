@@ -1,7 +1,6 @@
 const { sequelize } = require("../database/config");
 const { QueryTypes } = require("sequelize");
 const { UnauthorizedError, BadRequestError } = require("../utils/errors");
-const { cityId } = require("../constants/cities");
 const jwt = require("jsonwebtoken");
 const { userRoles } = require("../constants/users");
 
@@ -14,7 +13,6 @@ exports.getAllReviewsFromTheatre = async (req, res) => {
       bind: { theatreId },
     }
   );
-  console.log(reviews);
 
   return res.send(reviews);
 };
@@ -37,30 +35,16 @@ exports.createReview = async (req, res) => {
   const { mainText, rating } = req.body;
   const theatre = req.params.theatreId;
 
-  console.log(theatre);
-  console.log(req.body);
-
-  //Get username from token
   let token;
-  // Grab the Authorization header
   const authHeader = req.headers.authorization;
 
-  // Check it contains JWT token and extract the token
   if (authHeader && authHeader.startsWith("Bearer")) {
     token = authHeader.split(" ")[1];
   }
 
-  // Get userId from token
   const payload = jwt.verify(token, process.env.JWT_SECRET);
   const userId = payload.userId;
   const username = payload.username;
-  console.log(payload);
-
-  /*  await sequelize.query(`SELECT id FROM user WHERE id = $userId`, {
-    bind: {
-      userId: userId,
-    },
-  }); */
 
   if (!mainText || !rating) {
     throw new BadRequestError(
@@ -97,32 +81,21 @@ exports.updateReview = async (req, res) => {
 
   const { mainText, rating } = req.body;
 
-  //Get username from token
   let token;
-  // Grab the Authorization header
   const authHeader = req.headers.authorization;
 
-  // Check it contains JWT token and extract the token
   if (authHeader && authHeader.startsWith("Bearer")) {
     token = authHeader.split(" ")[1];
   }
 
-  // Get userId from token
   const payload = jwt.verify(token, process.env.JWT_SECRET);
   const userId = payload.userId;
   const role = payload.role;
-  console.log(payload);
-
-  console.log(userRoles.ADMIN);
-  console.log(role);
 
   if (!mainText && !rating) {
     throw new BadRequestError("You need to add a mainText and/or a rating!");
   }
 
-  //Check if correct user or ADMIN
-
-  //get review from DB
   const [reviewMatch, metadata] = await sequelize.query(
     `SELECT fk_user_id FROM review WHERE Id = $reviewId;`,
     {
@@ -174,25 +147,17 @@ exports.updateReview = async (req, res) => {
 exports.deleteReview = async (req, res) => {
   const reviewId = req.params.reviewId;
 
-  //Get username from token
   let token;
-  // Grab the Authorization header
   const authHeader = req.headers.authorization;
 
-  // Check it contains JWT token and extract the token
   if (authHeader && authHeader.startsWith("Bearer")) {
     token = authHeader.split(" ")[1];
   }
 
-  // Get userId from token
   const payload = jwt.verify(token, process.env.JWT_SECRET);
   const userId = payload.userId;
   const role = payload.role;
-  console.log(payload);
 
-  //Check if correct user or ADMIN
-
-  //get review from DB
   const [reviewMatch] = await sequelize.query(
     `SELECT fk_user_id FROM review WHERE Id = $reviewId;`,
     {

@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const { userRoles } = require("../constants/users");
 const {
   getTheatreById,
   getAllTheatres,
@@ -15,20 +14,12 @@ const {
   updateReview,
   deleteReview,
 } = require("../controllers/reviewController");
-const {
-  isAuthenticated,
-  authorizeRoles,
-} = require("../middleware/authenticationMiddleware");
+const { isAuthenticated } = require("../middleware/authenticationMiddleware");
 
-//get all theatres
+/* Theatres */
 router.get("/", getAllTheatres);
-
-//Get theatre by theatre id
 router.get("/:theatreId", getTheatreById);
-//Create new theatre
 router.post("/", isAuthenticated, createNewTheatre);
-
-//Update theatre
 router.put("/:theatreId", isAuthenticated, updateTheatre);
 router.delete("/:theatreId", isAuthenticated, deleteTheatre);
 

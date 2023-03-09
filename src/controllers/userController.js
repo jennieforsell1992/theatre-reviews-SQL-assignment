@@ -6,17 +6,13 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 exports.getAllUsers = async (req, res) => {
-  //Get username from token
   let token;
-  // Grab the Authorization header
   const authHeader = req.headers.authorization;
 
-  // Check it contains JWT token and extract the token
   if (authHeader && authHeader.startsWith("Bearer")) {
     token = authHeader.split(" ")[1];
   }
 
-  // Get userId from token
   const payload = jwt.verify(token, process.env.JWT_SECRET);
   const userId = payload.userId;
   const role = payload.role;
@@ -35,17 +31,13 @@ exports.getAllUsers = async (req, res) => {
 exports.getUserById = async (req, res) => {
   const userId = req.params.userId;
 
-  //Get username from token
   let token;
-  // Grab the Authorization header
   const authHeader = req.headers.authorization;
 
-  // Check it contains JWT token and extract the token
   if (authHeader && authHeader.startsWith("Bearer")) {
     token = authHeader.split(" ")[1];
   }
 
-  // Get userId from token
   const payload = jwt.verify(token, process.env.JWT_SECRET);
   const role = payload.role;
 
@@ -69,22 +61,16 @@ exports.updateUser = async (req, res) => {
 
   let { username, password, email, role } = req.body;
 
-  //Get username from token
   let token;
-  // Grab the Authorization header
   const authHeader = req.headers.authorization;
 
-  // Check it contains JWT token and extract the token
   if (authHeader && authHeader.startsWith("Bearer")) {
     token = authHeader.split(" ")[1];
   }
 
-  // Get userId from token
   const payload = jwt.verify(token, process.env.JWT_SECRET);
   const jwtUserId = payload.userId;
   const jwtRole = payload.role;
-  console.log(jwtUserId);
-  console.log(userId);
 
   const salt = await bcrypt.genSalt(10);
   const hashedpassword = await bcrypt.hash(password, salt);
@@ -135,7 +121,6 @@ exports.updateUser = async (req, res) => {
 exports.deleteUserById = async (req, res) => {
   const userId = req.params.userId;
 
-  //ADMIN kan ta bort alla konton, medans OWNER & USER kan bara ta bort sitt egna konto och inte någon annans.
   if (userId != req.user?.userId && req.user.role !== userRoles.ADMIN) {
     throw new UnauthorizedError("You can only delete your own account");
   }

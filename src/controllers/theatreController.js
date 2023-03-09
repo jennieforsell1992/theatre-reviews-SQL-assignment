@@ -41,21 +41,16 @@ exports.createNewTheatre = async (req, res) => {
   const { theatreName, address, phoneNumber, desc, email, owner, city } =
     req.body;
 
-  //Get username from token
   let token;
-  // Grab the Authorization header
   const authHeader = req.headers.authorization;
 
-  // Check it contains JWT token and extract the token
   if (authHeader && authHeader.startsWith("Bearer")) {
     token = authHeader.split(" ")[1];
   }
 
-  // Get userId from token
   const payload = jwt.verify(token, process.env.JWT_SECRET);
   const userId = payload.userId;
   const role = payload.role;
-  console.log(payload);
 
   if (role === userRoles.ADMIN || userRoles.OWNER) {
     const [newTheatreId] = await sequelize.query(
@@ -98,22 +93,16 @@ exports.updateTheatre = async (req, res) => {
   const { theatreName, address, phoneNumber, desc, email, owner, city } =
     req.body;
 
-  //Get username from token
   let token;
-  // Grab the Authorization header
   const authHeader = req.headers.authorization;
 
-  // Check it contains JWT token and extract the token
   if (authHeader && authHeader.startsWith("Bearer")) {
     token = authHeader.split(" ")[1];
   }
 
-  // Get userId from token
   const payload = jwt.verify(token, process.env.JWT_SECRET);
   const userId = payload.userId;
   const role = payload.role;
-  console.log(theatreId);
-  console.log(userId);
 
   if (role === userRoles.ADMIN) {
     const [updatedTheatre, metadata] = await sequelize.query(
@@ -189,9 +178,6 @@ exports.deleteTheatre = async (req, res) => {
   const payload = jwt.verify(token, process.env.JWT_SECRET);
   const userId = payload.userId;
   const role = payload.role;
-  console.log(payload);
-
-  console.log(role);
 
   if (role === userRoles.ADMIN) {
     await sequelize.query(
@@ -203,9 +189,7 @@ exports.deleteTheatre = async (req, res) => {
         type: QueryTypes.DELETE,
       }
     );
-    console.log("hej");
   } else {
-    //Hämtar user_id från teater
     const [theatreToDeleteUserId, theatreMetadata] = await sequelize.query(
       `SELECT fk_user_id FROM theatre WHERE id = $theatreId AND fk_user_id = $userId;`,
       {
@@ -228,8 +212,6 @@ exports.deleteTheatre = async (req, res) => {
         "Sorry, you don't have the right access to do this."
       );
     }
-
-    console.log(role);
 
     await sequelize.query(
       `DELETE FROM theatre WHERE id = $theatreId AND fk_user_id = $userId RETURNING *;`,

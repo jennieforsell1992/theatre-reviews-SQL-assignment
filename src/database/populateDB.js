@@ -13,8 +13,6 @@ const seedTheatresDb = async () => {
     await sequelize.query(`DROP TABLE IF EXISTS user;`);
     await sequelize.query(`DROP TABLE IF EXISTS city`);
 
-    // Hashing passwords
-
     let joakimPassword = "password";
     const joakimsalt = await bcrypt.genSalt(10);
     const joakimHash = await bcrypt.hash(joakimPassword, joakimsalt);
