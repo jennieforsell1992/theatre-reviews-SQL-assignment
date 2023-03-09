@@ -1,4 +1,4 @@
-const { UnauthenticatedError, UnauthorizedError } = require("../utils/errors");
+const { UnauthenticatedError } = require("../utils/errors");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
@@ -28,13 +28,4 @@ exports.isAuthenticated = async (req, res, next) => {
   } catch (error) {
     throw new UnauthenticatedError("Authentication invalid");
   }
-};
-
-exports.authorizeRoles = (...roles) => {
-  return (req, res, next) => {
-    if (!req.user?.role || !roles.includes(req.user.role)) {
-      throw new UnauthorizedError("Unauthorized Access");
-    }
-    next();
-  };
 };
