@@ -55,12 +55,12 @@ To get our application to run on your machine, follow these steps.
 
 ### Joakim Fenix (USER)
 
-"email": "Jocke@email.com" 
+"email": "Jocke@email.com"  
 "password": "password"
 
 ### Malin Åkerman (ADMIN)
 
-"email": "Malin@email.com"  
+"email": "Malin@email.com"   
 "password": "Malin123"
 
 ### Erik Garbo (OWNER)
@@ -70,5 +70,5 @@ To get our application to run on your machine, follow these steps.
 
 #### Henrik Kavel (OWNER)
 
-"email": "Henrik@email.com" 
+"email": "Henrik@email.com"   
 "password": "ManOfSteel"
