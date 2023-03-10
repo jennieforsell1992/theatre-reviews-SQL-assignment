@@ -55,20 +55,20 @@ To get our application to run on your machine, follow these steps.
 
 ### Joakim Fenix (USER)
 
-email: Jocke@email.com  
-password: password
+"email": "Jocke@email.com" 
+"password": "password"
 
 ### Malin Åkerman (ADMIN)
 
-email: Malin@email.com  
-password: Malin123
+"email": "Malin@email.com"  
+"password": "Malin123"
 
 ### Erik Garbo (OWNER)
 
-email: Erik@email.com  
-password: ErikSecret
+"email": "Erik@email.com"  
+"password": "ErikSecret"
 
 #### Henrik Kavel (OWNER)
 
-email: Henrik@email.com  
-password: ManOfSteel
+"email": "Henrik@email.com" 
+"password": "ManOfSteel"
